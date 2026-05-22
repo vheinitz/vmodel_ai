@@ -68,29 +68,24 @@ git add -A
 git commit -m "Initial project from V-Model XT template"
 ```
 
-### 2. Initialize with Project Data
+### 2. Load the Bootstrap Context into Your AI Agent
+**Read `PI_CONTEXT.md` into your pi/coding-agent instance first.** This file gives the agent complete knowledge of:
+- The V-Model XT system and all 10 agents
+- Every directory and its purpose
+- The reactive layer-listening agent workflow
+- Quick-start prompts for common tasks
+
+Then use one of the quick-start prompts from `PI_CONTEXT.md` to begin your session.
+
+### 3. Initialize with Project Data
 ```bash
 bash .pi/scripts/init-project.sh
 ```
 You are prompted for project number, name, description, and IEC 62304 safety class (A/B/C).
+Alternatively, let the AI agent guide you through initialization interactively.
 
-### 3. Populate Input Data
-Place any existing artifacts (requirements docs, source code, architecture diagrams) in a temporary input directory or directly in the project folders. Agents will process these when triggered.
-
-### 4. Trigger the Agent Pipeline
-```bash
-make all
-```
-This runs: dashboard update → all agents → checklists → traceability generation.
-
-Each agent:
-1. Reads the project state from `dashboard/data/status.json`
-2. Scans its observed directories for changes
-3. Produces/updates documents in its output directories
-4. Updates the dashboard with findings and suggestions
-
-### 5. View Dashboard
-Open `dashboard/index.html` to see the V-Model visualization, phase progress, agent status, and suggestions.
+### 4. Add Existing Artifacts
+Place any existing artifacts (requirements docs, source code, architecture diagrams) in a temporary directory or directly in the project folders. Agents will process these when you ask them to.
 
 ## Directory Structure
 
