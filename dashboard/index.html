@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-Model XT — Project Dashboard</title>
+<!-- Generic dashboard — reads project data from dashboard/data/status.json -->
+<style>
+/* ============================================================
+   V-Model XT Dashboard — Medical Device Projects
+   ============================================================ */
+:root {
+    --bg: #0a0e14;
+    --surface: #141b22;
+    --surface2: #1c2530;
+    --border: #2a3545;
+    --text: #c8d6e5;
+    --text-dim: #6b7d95;
+    --accent: #39a0ff;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --danger: #e74c3c;
+    --phase-pending: #4a5568;
+    --phase-progress: #3498db;
+    --phase-complete: #27ae60;
+    --phase-blocked: #e67e22;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.header h1 { font-size: 1.4em; font-weight: 600; color: #fff; }
+.header .project-info { font-size: 0.85em; color: var(--text-dim); }
+.header .last-update { font-size: 0.8em; color: var(--text-dim); }
+
+/* Main layout */
+.main { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
+@media (max-width: 1100px) { .main { grid-template-columns: 1fr; } }
+
+/* Cards */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.card h2 { font-size: 1.1em; margin-bottom: 16px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.card h3 { font-size: 0.95em; color: var(--accent); margin: 12px 0 8px; }
+
+/* V-Model Diagram */
+.vmodel-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    font-size: 0.8em;
+}
+.vmodel-left, .vmodel-right { display: flex; flex-direction: column; gap: 2px; }
+.vmodel-center { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    color: var(--text-dim);
+    font-style: italic;
+}
+.vnode {
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.vnode:hover { transform: scale(1.02); }
+.vnode .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.vnode .label { flex: 1; }
+.vnode .pct { font-weight: 600; font-size: 0.85em; opacity: 0.9; }
+
+.status-pending { background: var(--phase-pending); }
+.status-in-progress { background: var(--phase-progress); }
+.status-completed { background: var(--phase-complete); }
+.status-blocked { background: var(--phase-blocked); }
+
+.dot-pending { background: #6b7d95; }
+.dot-in-progress { background: #3498db; animation: pulse 1.5s infinite; }
+.dot-completed { background: #2ecc71; }
+.dot-blocked { background: #e67e22; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Progress bars */
+.progress-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.progress-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Decision gates */
+.gates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.gate {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.78em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.gate-passed { background: #1a3d2b; color: #2ecc71; border: 1px solid #2ecc71; }
+.gate-pending { background: #2a2a2a; color: #888; border: 1px solid #444; }
+
+/* Metrics grid */
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.metric {
+    background: var(--surface2);
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+}
+.metric .value { font-size: 1.8em; font-weight: 700; color: #fff; }
+.metric .label { font-size: 0.75em; color: var(--text-dim); margin-top: 4px; }
+
+/* Agent status */
+.agent-list { display: flex; flex-direction: column; gap: 6px; }
+.agent-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    font-size: 0.82em;
+}
+.agent-item .name { text-transform: capitalize; }
+.agent-item .status { font-size: 0.78em; padding: 2px 8px; border-radius: 10px; }
+.status-idle { color: #888; background: #222; }
+.status-running { color: #3498db; background: #1a2d44; }
+.status-done { color: #2ecc71; background: #1a3d2b; }
+.status-error { color: #e74c3c; background: #3d1a1a; }
+
+/* Suggestions */
+.suggestions { font-size: 0.85em; }
+.suggestions li { margin: 6px 0; padding-left: 8px; border-left: 2px solid var(--accent); list-style: none; }
+
+/* Tab navigation */
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab {
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    transition: all 0.2s;
+}
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab:hover:not(.active) { color: #fff; border-color: #555; }
+
+/* Refresh button */
+.refresh-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: opacity 0.2s;
+}
+.refresh-btn:hover { opacity: 0.85; }
+
+/* Summary bar */
+.summary-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.85em;
+    flex-wrap: wrap;
+}
+.summary-item {
+    padding: 6px 12px;
+    background: var(--surface2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.summary-item .count { font-weight: 700; color: #fff; }
+
+/* Connector lines in V-model */
+.connectors { text-align: center; color: var(--text-dim); font-size: 0.7em; padding: 2px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div>
+        <h1>V-Model XT Dashboard</h1>
+        <div class="project-info" id="projectInfo">Loading...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+        <div class="last-update" id="lastUpdate"></div>
+        <button class="refresh-btn" onclick="loadData()">⟳ Refresh</button>
+    </div>
+</div>
+
+<div class="main">
+    <!-- Left column -->
+    <div>
+        <!-- Summary bar -->
+        <div class="summary-bar" id="summaryBar"></div>
+
+        <!-- V-Model phase visualization -->
+        <div class="card">
+            <h2>V-Model Phases</h2>
+            <div class="vmodel-diagram" id="vmodelDiagram"></div>
+        </div>
+
+        <!-- Decision Gates -->
+        <div class="card">
+            <h2>Decision Gates (Entscheidungspunkte)</h2>
+            <div class="gates" id="decisionGates"></div>
+        </div>
+
+        <!-- Agent Suggestions -->
+        <div class="card">
+            <h2>AI Agent Suggestions</h2>
+            <div id="agentSuggestions" class="suggestions">
+                <p style="color:var(--text-dim)">Run trigger-agents.sh to generate suggestions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right column -->
+    <div>
+        <!-- Overall progress -->
+        <div class="card">
+            <h2>Overall Progress</h2>
+            <div class="progress-bar" style="height:12px;border-radius:6px"><div class="fill" id="overallProgress" style="width:0%;background:var(--accent)"></div></div>
+            <div style="text-align:center;margin-top:8px;font-size:1.4em;font-weight:700;color:#fff" id="overallPct">0%</div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="card">
+            <h2>Key Metrics</h2>
+            <div class="metrics" id="keyMetrics"></div>
+        </div>
+
+        <!-- Agent Status -->
+        <div class="card">
+            <h2>Agent Status</h2>
+            <div class="agent-list" id="agentList"></div>
+        </div>
+
+        <!-- Phase Detail -->
+        <div class="card">
+            <h2>Phase Checklist Progress</h2>
+            <div id="phaseChecklistProgress"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// Dashboard Data Loader
+// ============================================================
+async function loadData() {
+    try {
+        const resp = await fetch('data/status.json?' + Date.now());
+        const data = await resp.json();
+        render(data);
+    } catch (e) {
+        console.error('Failed to load status.json:', e);
+        document.getElementById('projectInfo').textContent = '⚠ Could not load project data. Ensure status.json exists.';
+    }
+}
+
+// ============================================================
+// Render all dashboard components
+// ============================================================
+function render(data) {
+    renderProjectInfo(data);
+    renderSummary(data);
+    renderVModel(data);
+    renderGates(data);
+    renderOverallProgress(data);
+    renderMetrics(data);
+    renderAgents(data);
+    renderPhaseChecklists(data);
+    renderSuggestions(data);
+}
+
+function renderProjectInfo(data) {
+    document.getElementById('projectInfo').textContent = 
+        `Project: ${data.project || 'N/A'} (${data.number || 'N/A'}) | Safety Class: ${data.safety_class || '?'}`;
+    document.getElementById('lastUpdate').textContent = 
+        `Updated: ${(data.last_update || 'Never').replace('T', ' ')}`;
+}
+
+function renderSummary(data) {
+    const phases = data.phases || {};
+    let total = 0, done = 0, inprog = 0, pending = 0;
+    for (const [k, v] of Object.entries(phases)) {
+        total++;
+        if (v.status === 'completed') done++;
+        else if (v.status === 'in-progress') inprog++;
+        else pending++;
+    }
+    document.getElementById('summaryBar').innerHTML = `
+        <div class="summary-item"><span class="count">${total}</span> phases</div>
+        <div class="summary-item">✅ <span class="count">${done}</span> completed</div>
+        <div class="summary-item">🔄 <span class="count">${inprog}</span> in-progress</div>
+        <div class="summary-item">⏳ <span class="count">${pending}</span> pending</div>
+    `;
+}
+
+function renderVModel(data) {
+    const phases = data.phases || {};
+    
+    // Left side (decomposition/definition)
+    const leftPhases = [
+        { key: '00_project_initiation', label: 'Project Initiation' },
+        { key: '01_requirements', label: 'Requirements Analysis' },
+        { key: '02_architecture', label: 'System & SW Architecture' },
+        { key: '03_design', label: 'Detailed Design' },
+    ];
+    
+    // Right side (integration/verification) — reversed order for V-shape
+    const rightPhases = [
+        { key: '07_validation', label: 'Validation (OQ/PQ)' },
+        { key: '06_verification', label: 'System Verification' },
+        { key: '05_integration', label: 'Integration' },
+        { key: '04_implementation', label: 'Implementation & Unit Tests' },
+    ];
+    
+    let html = '<div class="vmodel-left">';
+    for (const p of leftPhases) {
+        const info = phases[p.key] || { status: 'pending', completion: 0 };
+        html += renderVNode(p.label, info);
+    }
+    html += '</div>';
+    
+    html += '<div class="vmodel-center">';
+    html += '<div style="font-size:0.9em;color:var(--accent)">▼ Decomposition</div>';
+    html += '<div style="font-size:0.8em;margin:2px 0">│</div>';
+    html += '<div style="font-size:0.8em">Implementation</div>';
+    html += '<div style="font-size:0.8em;margin:2px 0">│</div>';
+    html += '<div style="font-size:0.9em;color:var(--accent)">▲ Integration</div>';
+    html += '</div>';
+    
+    html += '<div class="vmodel-right">';
+    for (const p of rightPhases) {
+        const info = phases[p.key] || { status: 'pending', completion: 0 };
+        html += renderVNode(p.label, info);
+    }
+    html += '</div>';
+    
+    document.getElementById('vmodelDiagram').innerHTML = html;
+}
+
+function renderVNode(label, info) {
+    const statusClass = 'status-' + (info.status || 'pending');
+    const dotClass = 'dot-' + (info.status || 'pending');
+    const pct = info.completion || 0;
+    return `
+        <div class="vnode ${statusClass}" title="${label}: ${pct}%">
+            <span class="status-dot ${dotClass}"></span>
+            <span class="label">${label}</span>
+            <span class="pct">${pct}%</span>
+        </div>
+        <div class="progress-bar"><div class="fill" style="width:${pct}%;background:inherit"></div></div>
+    `;
+}
+
+function renderGates(data) {
+    const gates = data.decision_gates || {};
+    const gateLabels = {
+        'G1_project_approved': 'G1: Project Approved',
+        'G2_requirements_baselined': 'G2: Reqs Baselined',
+        'G3_architecture_defined': 'G3: Architecture Defined',
+        'G4_design_completed': 'G4: Design Completed',
+        'G5_implementation_done': 'G5: Implementation Done',
+        'G6_integration_done': 'G6: Integration Done',
+        'G7_verification_done': 'G7: Verification Done',
+        'G8_validation_done': 'G8: Validation Done',
+        'G9_project_completed': 'G9: Project Completed'
+    };
+    
+    let html = '';
+    for (const [key, label] of Object.entries(gateLabels)) {
+        const passed = gates[key] || false;
+        html += `<span class="gate ${passed ? 'gate-passed' : 'gate-pending'}">${passed ? '✅' : '⏳'} ${label}</span>`;
+    }
+    document.getElementById('decisionGates').innerHTML = html || '<span style="color:var(--text-dim)">No gate data</span>';
+}
+
+function renderOverallProgress(data) {
+    const phases = data.phases || {};
+    let totalPct = 0, count = 0;
+    for (const v of Object.values(phases)) {
+        totalPct += v.completion || 0;
+        count++;
+    }
+    const avg = count > 0 ? Math.round(totalPct / count) : 0;
+    document.getElementById('overallProgress').style.width = avg + '%';
+    document.getElementById('overallPct').textContent = avg + '%';
+}
+
+function renderMetrics(data) {
+    const m = data.metrics || {};
+    document.getElementById('keyMetrics').innerHTML = `
+        <div class="metric"><div class="value">${m.total_requirements || 0}</div><div class="label">Requirements</div></div>
+        <div class="metric"><div class="value">${m.code_coverage_percent || 0}%</div><div class="label">Code Coverage</div></div>
+        <div class="metric"><div class="value">${m.total_test_cases || 0}</div><div class="label">Test Cases</div></div>
+        <div class="metric"><div class="value" style="color:${(m.open_defects||0) > 0 ? 'var(--danger)' : 'var(--success)'}">${m.open_defects || 0}</div><div class="label">Open Defects</div></div>
+        <div class="metric"><div class="value">${m.total_risk_items || 0}</div><div class="label">Risk Items</div></div>
+        <div class="metric"><div class="value">${m.risk_items_controlled || 0}/${m.total_risk_items || 0}</div><div class="label">Risks Controlled</div></div>
+    `;
+}
+
+function renderAgents(data) {
+    const agents = data.agents || {};
+    let html = '';
+    for (const [name, info] of Object.entries(agents)) {
+        const statusClass = 'status-' + (info.status || 'idle');
+        const lastRun = info.last_run ? info.last_run.replace('T', ' ').substring(0, 16) : 'never';
+        html += `
+            <div class="agent-item">
+                <span class="name">${name.replace(/-/g, ' ')}</span>
+                <span class="status ${statusClass}">${info.status || 'idle'}</span>
+                <span style="font-size:0.7em;color:var(--text-dim)" title="Last run">${lastRun}</span>
+            </div>
+        `;
+    }
+    document.getElementById('agentList').innerHTML = html || '<p style="color:var(--text-dim)">No agent data</p>';
+}
+
+function renderPhaseChecklists(data) {
+    const phases = data.phases || {};
+    let html = '';
+    for (const [key, info] of Object.entries(phases)) {
+        const total = info.checklist_total || 0;
+        const done = info.checklist_done || 0;
+        const pct = total > 0 ? Math.round(done * 100 / total) : 0;
+        const label = key.replace(/_/g, ' ').replace(/^../, '');
+        html += `
+            <div style="margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between;font-size:0.82em">
+                    <span>${label}</span><span>${done}/${total}</span>
+                </div>
+                <div class="progress-bar"><div class="fill" style="width:${pct}%;background:var(--accent)"></div></div>
+            </div>
+        `;
+    }
+    document.getElementById('phaseChecklistProgress').innerHTML = html || '<p style="color:var(--text-dim)">No phase data</p>';
+}
+
+function renderSuggestions(data) {
+    const agents = data.agents || {};
+    let html = '';
+    let hasSuggestions = false;
+    for (const [name, info] of Object.entries(agents)) {
+        if (info.suggestions && info.suggestions.length > 0) {
+            hasSuggestions = true;
+            html += `<h3>${name.replace(/-/g, ' ')}</h3><ul>`;
+            for (const s of info.suggestions) {
+                html += `<li>→ ${s}</li>`;
+            }
+            html += '</ul>';
+        }
+    }
+    if (!hasSuggestions) {
+        html = '<p style="color:var(--text-dim)">Run <code>scripts/trigger-agents.sh</code> to generate AI agent suggestions for next steps.</p>';
+    }
+    document.getElementById('agentSuggestions').innerHTML = html;
+}
+
+// Auto-load on page load
+document.addEventListener('DOMContentLoaded', loadData);
+</script>
+</body>
+</html>

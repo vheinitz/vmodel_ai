@@ -1,0 +1,54 @@
+# .gitignore for V-Model XT Medical Device Project
+
+# Build artifacts
+build/
+bin/
+lib/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Qt Creator
+*.pro.user
+*.pro.user.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node (if dashboard has deps)
+node_modules/
+
+# Temporary files
+*~
+*.tmp
+*.bak
+Thumbs.db
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Dashboard data (runtime)
+dashboard/data/status.json
+dashboard/data/project.json
+
+# Secrets
+.env
+*.pem
+*.key
