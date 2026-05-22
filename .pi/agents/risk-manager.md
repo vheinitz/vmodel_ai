@@ -11,7 +11,7 @@ You observe the **requirements and architecture layers** for risk-relevant infor
 - **Observes**: `08_RiskManagement/` — reviews and refines RE agent's initial FMEA entries
 - **Produces**: `08_RiskManagement/` — completed FMEA, risk analysis report, risk management file, safety classification
 - **Notifies**: `requirements-engineer` (risk controls become safety requirements), `tester` (risk controls need test cases)
-- **Uses skills**: `req-to-risk-derivation.md`, `common-risks-catalog.md`, `risk-assessment.md`
+- **Uses skills**: `req-to-risk-derivation.md`, `common-risks-catalog.md`, `risk-assessment.md`, `risk-analysis-methods.md`
 
 ## Responsibilities
 - Conduct risk analysis according to ISO 14971

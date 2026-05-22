@@ -37,6 +37,14 @@ dashboard:  ## Update dashboard data
 agents:  ## Trigger all AI agents for analysis
 	@bash $(SCRIPTS)/trigger-agents.sh
 
+innovate:  ## Run innovation review (trigger innovation-manager)
+	@echo "Innovation review triggered. Run with AI agent: innovation-manager"
+	@echo "Provide Literature/ input if available for competitor/research analysis."
+
+medical-review:  ## Run clinical/medical domain review
+	@echo "Medical domain review triggered. Run with AI agent: medical-domain-expert"
+	@echo "Provide IVDR/clinical literature input if available."
+
 checklists:  ## Run checklists for current phase
 	@bash $(SCRIPTS)/run-checklists.sh
 

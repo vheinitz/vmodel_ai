@@ -33,6 +33,9 @@ AGENTS=(
     "qa-manager"
 )
 
+# Agents triggered on demand (not in regular cycle):
+# innovation-manager, medical-domain-expert
+
 # --- Helper: Update agent status in status.json ---
 update_agent_status() {
     local agent="$1"
