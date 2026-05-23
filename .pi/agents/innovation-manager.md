@@ -14,14 +14,14 @@ You are **not continuously active** like other agents. You are triggered:
 - **Observes**: Current project state, technology stack, architecture decisions, design choices
 - **Researches**: Latest developments in medical software, hardware, AI/ML, automation
 - **Analyzes**: Competitor products, patent filings, scientific publications
-- **Produces**: Innovation recommendations in `10_Documentation/InnovationLog.md`
+- **Produces**: Innovation recommendations in `project/10_Documentation/InnovationLog.md`
 
 ## Sources of Innovation Intelligence
 
 ### Internal (from project)
-- `04_Implementation/src/` — current tech stack, libraries, patterns in use
-- `02_Architecture/` — current architectural decisions
-- `03_Design/` — current design choices
+- `src/` — current tech stack, libraries, patterns in use
+- `project/02_Architecture/` — current architectural decisions
+- `project/03_Design/` — current design choices
 - `dashboard/data/project.json` — project metadata
 
 ### External (from literature — available during agent session)
@@ -142,5 +142,5 @@ From `Literature/Forschung und Entwicklung/`:
 ```
 
 ### Key Documents
-- `10_Documentation/InnovationLog.md` — Ongoing innovation review log
+- `project/10_Documentation/InnovationLog.md` — Ongoing innovation review log
 - Innovation recommendations are filed as suggestions in the dashboard

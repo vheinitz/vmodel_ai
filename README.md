@@ -36,25 +36,27 @@ Agents work in a **reactive layer-listening pattern**: agents at each layer obse
   Software Design ── Unit Tests  │       │                       │
         │               ↑       │       │                       │
   Implementation ───────┘       │       │                       │
-                                └───────┴───────────────────────┘
+  (in src/)                     └───────┴───────────────────────┘
 
   ───→ Definition flow (left side): upper layer changes trigger lower layer updates
   ←─── Verification flow (right side): same-level agents observe definition layer
+  Unit tests live alongside code in src/<component>/tests/
+  Integration, system, architecture tests live in project/06_Verification/
 ```
 
 ### Agent Layer Dependencies
 
 | Agent | Observes (triggered by changes in) | Produces/Updates |
 |-------|-----------------------------------|-----------------|
-| `requirements-engineer` | Stakeholder input, source code, docs | `01_Requirements/` — SRS, SyRS |
-| `risk-manager` | Requirements, architecture changes | `08_RiskManagement/` — FMEA, risk analysis |
-| `system-architect` | Requirements changes | `02_Architecture/01_SystemArchitecture/` |
-| `software-architect` | System architecture, requirements changes | `02_Architecture/02_SoftwareArchitecture/` |
-| `developer` | Software design changes | `04_Implementation/` — source code |
-| `tester` (unit) | Software design, implementation | `06_Verification/01_UnitTests/` |
-| `tester` (integration) | Software architecture, implementation | `06_Verification/02_IntegrationTests/` |
-| `tester` (system) | System requirements, system architecture | `06_Verification/03_SystemTests/` |
-| `tester` (architecture) | System architecture | `06_Verification/04_ArchitectureTests/` |
+| `requirements-engineer` | Stakeholder input, source code, docs | `project/01_Requirements/` — SRS, SyRS |
+| `risk-manager` | Requirements, architecture changes | `project/08_RiskManagement/` — FMEA, risk analysis |
+| `system-architect` | Requirements changes | `project/02_Architecture/01_SystemArchitecture/` |
+| `software-architect` | System architecture, requirements changes | `project/02_Architecture/02_SoftwareArchitecture/` |
+| `developer` | Software design changes | `src/` — source code + unit tests |
+| `tester` (unit) | Software design, implementation | `src/<component>/tests/` — unit tests |
+| `tester` (integration) | Software architecture, implementation | `project/06_Verification/02_IntegrationTests/` |
+| `tester` (system) | System requirements, system architecture | `project/06_Verification/03_SystemTests/` |
+| `tester` (architecture) | System architecture | `project/06_Verification/04_ArchitectureTests/` |
 | `qa-manager` | All layers, checklists | QA reports, audits, gate decisions |
 
 ## Project Initialization & Workflow
@@ -91,18 +93,23 @@ Place any existing artifacts (requirements docs, source code, architecture diagr
 
 | Directory | Content |
 |-----------|---------|
-| `00_ProjectManagement/` | Project plans, PMP, QA plan, CM plan |
-| `01_Requirements/` | Stakeholder, System, Software, Hardware requirements |
-| `02_Architecture/` | System Architecture (SyAD), SW Architecture (SW-SAD), HW Architecture |
-| `03_Design/` | System Design (SDD), SW Design, HW Design |
-| `04_Implementation/` | Source code, unit test code |
-| `05_Integration/` | Software integration, system integration plans & reports |
-| `06_Verification/` | Unit tests, integration tests, system tests, architecture tests |
-| `07_Validation/` | Operational Qualification (OQ), Performance Qualification (PQ) |
-| `08_RiskManagement/` | Risk analysis, FMEA, safety classification (IEC 62304) |
-| `09_Regulatory/` | IEC 62304, ISO 14971, IVDR compliance documentation |
-| `10_Documentation/` | Document templates, glossaries, generated documents, document index |
-| `99_Archive/` | Archived versions, superseded documents |
+| `src/` | All source code (MainTool, DataAnalyser, ConfigEditor, Firmware) + unit tests |
+| `project/00_ProjectManagement/` | Project plans, PMP, QA plan, CM plan |
+| `project/01_Requirements/` | Stakeholder, System, Software, Hardware requirements |
+| `project/02_Architecture/` | System Architecture (SyAD), SW Architecture (SW-SAD), HW Architecture |
+| `project/03_Design/` | System Design (SDD), SW Design, HW Design |
+| `project/04_Implementation/` | Implementation-related project docs (build env, coding standards) |
+| `project/05_Integration/` | Software integration, system integration plans & reports |
+| `project/06_Verification/` | Integration tests, system tests, architecture tests |
+| `project/07_Validation/` | Operational Qualification (OQ), Performance Qualification (PQ) |
+| `project/08_RiskManagement/` | Risk analysis, FMEA, safety classification (IEC 62304) |
+| `project/09_Regulatory/` | IEC 62304, ISO 14971, IVDR compliance documentation |
+| `project/10_Documentation/` | Document templates, glossaries, generated documents, document index |
+| `project/99_Archive/` | Archived versions, superseded documents |
+
+> **Code lives in `src/`**, organized by standalone component (MainTool, DataAnalyser, ConfigEditor, Firmware).
+> Each component has its own `tests/` subdirectory for unit tests.
+> All project management artifacts live under `project/`. Integration/system/architecture tests are in `project/06_Verification/`.
 
 ### Subdirectory Conventions
 
@@ -138,8 +145,8 @@ Place any existing artifacts (requirements docs, source code, architecture diagr
 | `requirements-engineer` | Elicitation, analysis, specification, traceability |
 | `system-architect` | System architecture, interface specifications |
 | `software-architect` | Software architecture, component design |
-| `developer` | Implementation, code reviews, unit tests |
-| `tester` | Test planning, test execution, verification reports |
+| `developer` | Implementation in `src/`, code reviews, unit tests in `src/<comp>/tests/` |
+| `tester` | Integration/system/architecture test planning & execution in `project/06_Verification/` |
 | `risk-manager` | Risk analysis, FMEA, safety classification |
 | `qa-manager` | Quality assurance, process audits, compliance checks |
 

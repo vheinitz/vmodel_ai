@@ -143,7 +143,7 @@ When auditing, consult:
 ## Document Lookup Pattern
 
 When an agent needs to verify compliance with a specific standard clause:
-1. Check `09_Regulatory/` for project-specific compliance matrices
+1. Check `project/09_Regulatory/` for project-specific compliance matrices
 2. Reference this skill for standard clause summaries
 3. Compare project artifacts against clause checklists above
 4. Flag gaps as non-conformances (→ QA Manager)

@@ -87,7 +87,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `ci`, `chore`
 ### 6.1 CM Log
 | CI ID | Name | Version | Status | Baseline | Location |
 |-------|------|---------|--------|----------|----------|
-| CI-001 | SRS-AC | v01.00 | Approved | REQS-v1.0 | 01_Requirements/... |
+| CI-001 | SRS-AC | v01.00 | Approved | REQS-v1.0 | project/01_Requirements/... |
 
 ## 7. Tool Chain
 

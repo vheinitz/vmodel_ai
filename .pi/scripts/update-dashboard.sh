@@ -38,29 +38,29 @@ count_files_all() {
 # --- Scan each phase ---
 echo "Scanning project artifacts..."
 
-REQS_STAKEHOLDER=$(count_files "${PROJECT_ROOT}/01_Requirements/01_StakeholderReqs")
-REQS_SYSTEM=$(count_files "${PROJECT_ROOT}/01_Requirements/02_SystemReqs")
-REQS_SW=$(count_files "${PROJECT_ROOT}/01_Requirements/03_SoftwareReqs")
-REQS_HW=$(count_files "${PROJECT_ROOT}/01_Requirements/04_HardwareReqs")
+REQS_STAKEHOLDER=$(count_files "${PROJECT_ROOT}/project/01_Requirements/01_StakeholderReqs")
+REQS_SYSTEM=$(count_files "${PROJECT_ROOT}/project/01_Requirements/02_SystemReqs")
+REQS_SW=$(count_files "${PROJECT_ROOT}/project/01_Requirements/03_SoftwareReqs")
+REQS_HW=$(count_files "${PROJECT_ROOT}/project/01_Requirements/04_HardwareReqs")
 
-ARCH_SYS=$(count_files "${PROJECT_ROOT}/02_Architecture/01_SystemArchitecture")
-ARCH_SW=$(count_files "${PROJECT_ROOT}/02_Architecture/02_SoftwareArchitecture")
-ARCH_HW=$(count_files "${PROJECT_ROOT}/02_Architecture/03_HardwareArchitecture")
+ARCH_SYS=$(count_files "${PROJECT_ROOT}/project/02_Architecture/01_SystemArchitecture")
+ARCH_SW=$(count_files "${PROJECT_ROOT}/project/02_Architecture/02_SoftwareArchitecture")
+ARCH_HW=$(count_files "${PROJECT_ROOT}/project/02_Architecture/03_HardwareArchitecture")
 
-DESIGN_SYS=$(count_files "${PROJECT_ROOT}/03_Design/01_SystemDesign")
-DESIGN_SW=$(count_files "${PROJECT_ROOT}/03_Design/02_SoftwareDesign")
+DESIGN_SYS=$(count_files "${PROJECT_ROOT}/project/03_Design/01_SystemDesign")
+DESIGN_SW=$(count_files "${PROJECT_ROOT}/project/03_Design/02_SoftwareDesign")
 
-IMPL_SRC=$(count_files_all "${PROJECT_ROOT}/04_Implementation/src")
-IMPL_TESTS=$(count_files_all "${PROJECT_ROOT}/04_Implementation/01_UnitTests")
+IMPL_SRC=$(count_files_all "${PROJECT_ROOT}/src")
+IMPL_TESTS=$(find "${PROJECT_ROOT}/src" -path '*/tests/*' -type f ! -name '.gitkeep' 2>/dev/null | wc -l)
 
-TEST_UNIT=$(count_files "${PROJECT_ROOT}/06_Verification/01_UnitTests")
-TEST_INTEG=$(count_files "${PROJECT_ROOT}/06_Verification/02_IntegrationTests")
-TEST_SYS=$(count_files "${PROJECT_ROOT}/06_Verification/03_SystemTests")
+TEST_INTEG=$(count_files "${PROJECT_ROOT}/project/06_Verification/02_IntegrationTests")
+TEST_SYS=$(count_files "${PROJECT_ROOT}/project/06_Verification/03_SystemTests")
+TEST_ARCH=$(count_files "${PROJECT_ROOT}/project/06_Verification/04_ArchitectureTests")
 
-RISK_ANALYSIS=$(count_files "${PROJECT_ROOT}/08_RiskManagement/01_RiskAnalysis")
-RISK_FMEA=$(count_files "${PROJECT_ROOT}/08_RiskManagement/02_FMEA")
+RISK_ANALYSIS=$(count_files "${PROJECT_ROOT}/project/08_RiskManagement/01_RiskAnalysis")
+RISK_FMEA=$(count_files "${PROJECT_ROOT}/project/08_RiskManagement/02_FMEA")
 
-PM=$(count_files "${PROJECT_ROOT}/00_ProjectManagement")
+PM=$(count_files "${PROJECT_ROOT}/project/00_ProjectManagement")
 
 # --- Calculate completion percentages ---
 calc_phase() {
@@ -88,9 +88,9 @@ get_status() {
 
 # Count checklists done (simplified: check if files exist with expected names)
 reqs_checklist=0
-[[ -f "${PROJECT_ROOT}/01_Requirements/02_SystemReqs/SystemRequirements_SyRS.md" ]] && ((reqs_checklist+=1)) || true
-[[ -f "${PROJECT_ROOT}/01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md" ]] && ((reqs_checklist+=1)) || true
-[[ -f "${PROJECT_ROOT}/01_Requirements/RequirementsTraceabilityMatrix.md" ]] && ((reqs_checklist+=1)) || true
+[[ -f "${PROJECT_ROOT}/project/01_Requirements/02_SystemReqs/SystemRequirements_SyRS.md" ]] && ((reqs_checklist+=1)) || true
+[[ -f "${PROJECT_ROOT}/project/01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md" ]] && ((reqs_checklist+=1)) || true
+[[ -f "${PROJECT_ROOT}/project/01_Requirements/RequirementsTraceabilityMatrix.md" ]] && ((reqs_checklist+=1)) || true
 
 # Phase completion estimates
 PHASE_INIT_COMPL=$(calc_phase "$PM" 5 1.0)
@@ -99,7 +99,7 @@ PHASE_ARCH_COMPL=$(calc_phase $((ARCH_SYS + ARCH_SW)) 2 1.0)
 PHASE_DESIGN_COMPL=$(calc_phase $((DESIGN_SYS + DESIGN_SW)) 2 1.0)
 PHASE_IMPL_COMPL=$(calc_phase "$IMPL_SRC" 10 1.0)
 PHASE_INTEG_COMPL=$(calc_phase "$TEST_INTEG" 3 1.0)
-PHASE_VERIF_COMPL=$(calc_phase $((TEST_UNIT + TEST_SYS)) 5 1.0)
+PHASE_VERIF_COMPL=$(calc_phase $((TEST_INTEG + TEST_SYS + TEST_ARCH)) 5 1.0)
 PHASE_VALID_COMPL=0  # late phase
 PHASE_RELEASE_COMPL=0
 PHASE_MAINT_COMPL=0
@@ -158,7 +158,7 @@ data['artifact_counts'] = {
     'software_design': ${DESIGN_SW},
     'source_files': ${IMPL_SRC},
     'unit_test_files': ${IMPL_TESTS},
-    'verification_files': ${TEST_UNIT},
+    'verification_files': ${TEST_ARCH},
     'integration_test_files': ${TEST_INTEG},
     'system_test_files': ${TEST_SYS},
     'risk_docs': ${RISK_ANALYSIS},

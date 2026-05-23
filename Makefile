@@ -59,13 +59,14 @@ serve:  ## Start HTTP server for dashboard (http://localhost:8080)
 
 count:  ## Count all project artifacts
 	@echo "Project Artifact Count:"
-	@echo "  Requirements:       $$(find 01_Requirements -name '*.md' | wc -l) files"
-	@echo "  Architecture:       $$(find 02_Architecture -name '*.md' | wc -l) files"
-	@echo "  Design:             $$(find 03_Design -name '*.md' | wc -l) files"
-	@echo "  Source Files:       $$(find 04_Implementation/src -type f | wc -l) files"
-	@echo "  Test Cases:         $$(find 06_Verification -name '*.md' | wc -l) files"
-	@echo "  Risk Documents:     $$(find 08_RiskManagement -name '*.md' | wc -l) files"
-	@echo "  Templates:          $$(find 10_Documentation/templates -name '*.md' | wc -l) templates"
+	@echo "  Requirements:       $$(find project/01_Requirements -name '*.md' | wc -l) files"
+	@echo "  Architecture:       $$(find project/02_Architecture -name '*.md' | wc -l) files"
+	@echo "  Design:             $$(find project/03_Design -name '*.md' | wc -l) files"
+	@echo "  Source Files:       $$(find src -type f ! -name '.gitkeep' | wc -l) files"
+	@echo "  Unit Tests:         $$(find src -path '*/tests/*' -type f ! -name '.gitkeep' | wc -l) files"
+	@echo "  Verification Tests: $$(find project/06_Verification -name '*.md' | wc -l) files"
+	@echo "  Risk Documents:     $$(find project/08_RiskManagement -name '*.md' | wc -l) files"
+	@echo "  Templates:          $$(find project/10_Documentation/templates -name '*.md' | wc -l) templates"
 
 clean:  ## Reset dashboard data (caution!)
 	@echo "WARNING: This will reset dashboard data."

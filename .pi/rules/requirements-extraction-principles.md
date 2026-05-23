@@ -141,11 +141,11 @@ When extracting requirements from existing products, verify each requirement:
 - [ ] Passes the "rewrite from scratch" test?
 - [ ] At the appropriate level for the target document (stakeholder vs. system vs. software)?
 - [ ] Not simply restating what old code does?
-- [ ] Placed in the correct subdirectory: StakeholderReqs → `01_StakeholderReqs/`, SystemReqs → `02_SystemReqs/`, SW Reqs → `03_SoftwareReqs/`, HW Reqs → `04_HardwareReqs/`?
+- [ ] Placed in the correct subdirectory: StakeholderReqs → `project/01_Requirements/01_StakeholderReqs/`, SystemReqs → `project/01_Requirements/02_SystemReqs/`, SW Reqs → `project/01_Requirements/03_SoftwareReqs/`, HW Reqs → `project/01_Requirements/04_HardwareReqs/`?
 
 ## Anti-Pattern: Wrong Directory
 
-❌ `01_Requirements/StakeholderRequirements.md` (root of requirements — lazy)
-✅ `01_Requirements/01_StakeholderReqs/StakeholderRequirements.md` (correct subdirectory)
+❌ `project/01_Requirements/StakeholderRequirements.md` (root of requirements — lazy)
+✅ `project/01_Requirements/01_StakeholderReqs/StakeholderRequirements.md` (correct subdirectory)
 
 The directory structure exists for a reason. Each requirements type has its own folder. Respect it.

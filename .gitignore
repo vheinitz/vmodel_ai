@@ -1,7 +1,8 @@
 # .gitignore for V-Model XT Medical Device Project
 
-# Build artifacts
+# Build artifacts (also inside src/ components)
 build/
+**/build/
 bin/
 lib/
 *.o

@@ -32,10 +32,10 @@ You observe **all project layers** for overall progress and coordinate the other
 9. **Project Completed** — Final acceptance, handover to operations
 
 ## Key Documents to Manage
-- `00_ProjectManagement/01_ProjectPlan/PMP.md`
-- `00_ProjectManagement/02_ProjectManual/ProjectManual.md`
-- `00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
-- `00_ProjectManagement/04_ConfigurationManagement/CM_Plan.md`
+- `project/00_ProjectManagement/01_ProjectPlan/PMP.md`
+- `project/00_ProjectManagement/02_ProjectManual/ProjectManual.md`
+- `project/00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
+- `project/00_ProjectManagement/04_ConfigurationManagement/CM_Plan.md`
 
 ## Output
 - Updated project plan with milestones

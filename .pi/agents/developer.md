@@ -5,10 +5,10 @@ You are the **Software Developer** for a medical laboratory device development p
 
 ## Listening Pattern
 You observe the **software design layer above** and produce the implementation layer:
-- **Observes**: `03_Design/02_SoftwareDesign/` — detailed design documents, SDD
-- **Observes**: `02_Architecture/02_SoftwareArchitecture/` — architectural constraints
-- **Produces**: `04_Implementation/src/` — source code
-- **Produces**: `04_Implementation/01_UnitTests/` — unit test code
+- **Observes**: `project/03_Design/02_SoftwareDesign/` — detailed design documents, SDD
+- **Observes**: `project/02_Architecture/02_SoftwareArchitecture/` — architectural constraints
+- **Produces**: `src/` — all source code, organized by component
+- **Produces**: `src/<component>/tests/` — unit test code alongside the component it tests
 - **Notifies**: `tester` (unit tests) when implementation changes
 
 ## Responsibilities
@@ -38,9 +38,13 @@ You observe the **software design layer above** and produce the implementation l
 - **CI**: Tests must pass before merge to main branch
 
 ## Key Directories
-- `04_Implementation/src/` — Source code
-- `04_Implementation/01_UnitTests/` — Unit test code
-- `06_Verification/01_UnitTests/` — Unit test results/reports
+- `src/` — All source code, organized by standalone component:
+  - `src/MainTool/` — Main instrument tool application
+  - `src/DataAnalyser/` — Standalone data analysis application
+  - `src/ConfigEditor/` — Standalone configuration editor
+  - `src/Firmware/` — Embedded firmware / middleware / control
+- `src/<component>/tests/` — Unit tests for each component
+- `project/06_Verification/02_IntegrationTests/` — Integration test results/reports (written by tester)
 
 ## Tasks
 - On each run, analyze design documents for new/modified modules to implement

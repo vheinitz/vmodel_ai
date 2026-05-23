@@ -8,7 +8,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-OUTPUT_FILE="${PROJECT_ROOT}/10_Documentation/TraceabilityMatrix.md"
+OUTPUT_FILE="${PROJECT_ROOT}/project/10_Documentation/TraceabilityMatrix.md"
 TIMESTAMP=$(date +%Y-%m-%d)
 
 echo "╔══════════════════════════════════════════════════════════════╗"
@@ -18,15 +18,15 @@ echo ""
 
 # --- Scan for requirement IDs in markdown files ---
 echo "Scanning for requirements..."
-REQ_IDS=$(grep -rh 'REQ-[A-Z]*-[0-9]*' "${PROJECT_ROOT}/01_Requirements/" 2>/dev/null | grep -oP 'REQ-[A-Z]+-\d+' | sort -u || true)
+REQ_IDS=$(grep -rh 'REQ-[A-Z]*-[0-9]*' "${PROJECT_ROOT}/project/01_Requirements/" 2>/dev/null | grep -oP 'REQ-[A-Z]+-\d+' | sort -u || true)
 
 # --- Scan for test case IDs ---
 echo "Scanning for test cases..."
-TEST_IDS=$(grep -rh 'TC-[A-Z]*-[0-9]*' "${PROJECT_ROOT}/06_Verification/" 2>/dev/null | grep -oP 'TC-[A-Z]+-\d+' | sort -u || true)
+TEST_IDS=$(grep -rh 'TC-[A-Z]*-[0-9]*' "${PROJECT_ROOT}/project/06_Verification/" "${PROJECT_ROOT}/src/" 2>/dev/null | grep -oP 'TC-[A-Z]+-\d+' | sort -u || true)
 
 # --- Scan for risk IDs ---
 echo "Scanning for risk items..."
-RISK_IDS=$(grep -rh 'FMEA-[0-9]*' "${PROJECT_ROOT}/08_RiskManagement/" 2>/dev/null | grep -oP 'FMEA-\d+' | sort -u || true)
+RISK_IDS=$(grep -rh 'FMEA-[0-9]*' "${PROJECT_ROOT}/project/08_RiskManagement/" 2>/dev/null | grep -oP 'FMEA-\d+' | sort -u || true)
 
 REQ_COUNT=$(echo "${REQ_IDS}" | grep -c . || echo "0")
 TEST_COUNT=$(echo "${TEST_IDS}" | grep -c . || echo "0")

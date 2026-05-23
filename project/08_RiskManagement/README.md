@@ -7,7 +7,7 @@ Risk management FEEDS INTO requirements and architecture. It is not an isolated 
 ## Process Flow
 
 ```
-User Needs (01_Requirements/00_UserNeeds_Lastenheft/)
+User Needs (project/01_Requirements/00_UserNeeds_Lastenheft/)
         │
         ▼
 ┌──────────────────────────────────────────────────┐
@@ -17,11 +17,12 @@ User Needs (01_Requirements/00_UserNeeds_Lastenheft/)
 │   RiskControls.md             ← Design/Protect/  │
 │                                  Inform hierarchy│
 │   RiskControls → Safety Reqs  ← THESE GO INTO   │
+│                                  project/01_Reqs/│
 │                                  02_SystemReqs/  │
 └──────────────────────────────────────────────────┘
         │
         ▼
-System Requirements (01_Requirements/02_SystemReqs/)
+System Requirements (project/01_Requirements/02_SystemReqs/)
   ← includes safety requirements from risk controls
         │
         ▼
@@ -51,10 +52,10 @@ System Requirements (01_Requirements/02_SystemReqs/)
 
 ## Critical Rule (ISO 14971 + IEC 62304)
 
-**Hazard analysis in `01_RiskAnalysis/` MUST be completed and reviewed BEFORE `01_Requirements/02_SystemReqs/` is baselined.**
+**Hazard analysis in `01_RiskAnalysis/` MUST be completed and reviewed BEFORE `project/01_Requirements/02_SystemReqs/` is baselined.**
 
 Rationale: Risk controls identified in hazard analysis become safety requirements. These safety requirements are legally binding (Pflichtenheft). Adding them after baselining constitutes a change request with full impact analysis.
 
 ## Cross-Reference
 
-See `01_Requirements/README.md` for the complete Lastenheft → Risk → Pflichtenheft flow.
+See `project/01_Requirements/README.md` for the complete Lastenheft → Risk → Pflichtenheft flow.

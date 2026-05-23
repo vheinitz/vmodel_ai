@@ -88,7 +88,7 @@ For each REQUIREMENT:
   │
   └── 8. VERIFICATION OF EFFECTIVENESS
         How to verify each risk control works?
-        → Link to test case in 06_Verification/
+        → Link to test case in project/06_Verification/
         → Document in FMEA verification column
 ```
 

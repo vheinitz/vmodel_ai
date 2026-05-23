@@ -47,10 +47,10 @@ For each document under review:
 - [ ] Conforms to applicable templates
 
 ## Key Documents
-- `00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
-- `00_ProjectManagement/03_QualityAssurance/QA_AuditReports/`
-- `00_ProjectManagement/03_QualityAssurance/CAPA_Log.md`
-- `00_ProjectManagement/03_QualityAssurance/DocumentReviewLog.md`
+- `project/00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
+- `project/00_ProjectManagement/03_QualityAssurance/QA_AuditReports/`
+- `project/00_ProjectManagement/03_QualityAssurance/CAPA_Log.md`
+- `project/00_ProjectManagement/03_QualityAssurance/DocumentReviewLog.md`
 
 ## Tasks
 - On each run, check document completeness for current phase

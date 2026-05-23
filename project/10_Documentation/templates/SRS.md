@@ -30,7 +30,7 @@ This Software Requirements Specification defines the software requirements for t
 | SOUP | Software of Unknown Provenance |
 
 ### 1.4 References
-- System Requirements Specification: `../02_SystemReqs/SystemRequirements_SyRS.md`
+- System Requirements Specification: `project/01_Requirements/02_SystemReqs/SystemRequirements_SyRS.md`
 - ISO 14971 Risk Management File
 - IEC 62304:2006+AMD1:2015
 

@@ -5,10 +5,10 @@ Generate standardized documents from templates using project data.
 
 ## Usage
 When invoked, this skill:
-1. Reads the relevant template from `10_Documentation/templates/`
+1. Reads the relevant template from `project/10_Documentation/templates/`
 2. Fills in data from project state (`dashboard/data/status.json`) and `dashboard/data/project.json`
 3. Generates the document in the appropriate phase directory
-4. Updates the document index at `10_Documentation/DocumentIndex.md`
+4. Updates the document index at `project/10_Documentation/DocumentIndex.md`
 
 ## Document Templates Available
 
@@ -52,9 +52,9 @@ regulatory: IEC 62304, ISO 14971
 ```
 
 ## Generation Process
-1. Select template from `10_Documentation/templates/`
+1. Select template from `project/10_Documentation/templates/`
 2. Load current project data from `dashboard/data/status.json`
 3. Fill template placeholders (`{PROJECT_NAME}`, `{PROJECT_NUMBER}`, `{COMPONENT}`, etc.)
 4. Save to appropriate phase directory
-5. Update `10_Documentation/DocumentIndex.md`
+5. Update `project/10_Documentation/DocumentIndex.md`
 6. Report generation to dashboard

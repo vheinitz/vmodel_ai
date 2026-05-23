@@ -9,14 +9,14 @@ This rule defines how risk management artifacts must be structured, what they mu
 
 | Artifact | Location | Producer | Consumer |
 |----------|----------|----------|----------|
-| **Risk Management Plan (RMP)** | `08_RiskManagement/01_RiskAnalysis/RiskManagementPlan.md` | Risk Manager | All agents, auditors |
-| **Hazard Identification List** | `08_RiskManagement/01_RiskAnalysis/HazardList.md` | RE Agent → Risk Manager | All agents |
-| **System FMEA** | `08_RiskManagement/02_FMEA/SystemFMEA.md` | RE Agent → Risk Manager | Tester, QA |
-| **Software FMEA** | `08_RiskManagement/02_FMEA/SoftwareFMEA.md` | RE Agent → Risk Manager | Tester, Developer |
-| **Risk Analysis Report** | `08_RiskManagement/01_RiskAnalysis/RiskAnalysisReport.md` | Risk Manager | QA, Regulatory |
-| **Safety Classification** | `08_RiskManagement/03_SafetyClassification/SoftwareSafetyClassification.md` | Risk Manager | All agents |
-| **Risk Management File (Summary)** | `08_RiskManagement/RiskManagementFile.md` | Risk Manager | Auditors, Notified Body |
-| **Risk Management Report** | `08_RiskManagement/RiskManagementReport.md` | Risk Manager (final) | Release approval |
+| **Risk Management Plan (RMP)** | `project/08_RiskManagement/01_RiskAnalysis/RiskManagementPlan.md` | Risk Manager | All agents, auditors |
+| **Hazard Identification List** | `project/08_RiskManagement/01_RiskAnalysis/HazardList.md` | RE Agent → Risk Manager | All agents |
+| **System FMEA** | `project/08_RiskManagement/02_FMEA/SystemFMEA.md` | RE Agent → Risk Manager | Tester, QA |
+| **Software FMEA** | `project/08_RiskManagement/02_FMEA/SoftwareFMEA.md` | RE Agent → Risk Manager | Tester, Developer |
+| **Risk Analysis Report** | `project/08_RiskManagement/01_RiskAnalysis/RiskAnalysisReport.md` | Risk Manager | QA, Regulatory |
+| **Safety Classification** | `project/08_RiskManagement/03_SafetyClassification/SoftwareSafetyClassification.md` | Risk Manager | All agents |
+| **Risk Management File (Summary)** | `project/08_RiskManagement/RiskManagementFile.md` | Risk Manager | Auditors, Notified Body |
+| **Risk Management Report** | `project/08_RiskManagement/RiskManagementReport.md` | Risk Manager (final) | Release approval |
 
 ---
 
@@ -193,4 +193,4 @@ REQ-ID ←→ FMEA-ID ←→ HAZ-ID ←→ Risk Control ←→ Safety REQ-ID ←
 - **Safety REQ → Test**: Every safety requirement has a verification test
 - **Test → Pass/Fail**: Every verification test has a result
 
-The traceability matrix at `10_Documentation/TraceabilityMatrix.md` must include all these links.
+The traceability matrix at `project/10_Documentation/TraceabilityMatrix.md` must include all these links.

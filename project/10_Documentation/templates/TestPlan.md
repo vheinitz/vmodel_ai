@@ -21,8 +21,8 @@ This test plan defines the {TEST_LEVEL} testing strategy, scope, approach, and r
 - **Architecture Tests:** Verify system architecture compliance
 
 ### 1.3 References
-- Software Requirements: `../../../01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
-- Software Architecture: `../../../02_Architecture/02_SoftwareArchitecture/SoftwareArchitecture_SW-SAD.md`
+- Software Requirements: `project/01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
+- Software Architecture: `project/02_Architecture/02_SoftwareArchitecture/SoftwareArchitecture_SW-SAD.md`
 - IEC 62304:2006+AMD1:2015 §5.5, §5.6, §5.7
 
 ## 2. Test Scope

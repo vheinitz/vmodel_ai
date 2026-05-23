@@ -8,10 +8,10 @@ You observe the **same-level definition/implementation layer** and produce test/
 
 | Test Level | Observes | Produces |
 |-----------|----------|----------|
-| **Unit Tests** | `03_Design/02_SoftwareDesign/` + `04_Implementation/` | `06_Verification/01_UnitTests/` |
-| **Integration Tests** | `02_Architecture/02_SoftwareArchitecture/` + `04_Implementation/` | `06_Verification/02_IntegrationTests/` |
-| **System Tests** | `01_Requirements/02_SystemReqs/` + `02_Architecture/01_SystemArchitecture/` | `06_Verification/03_SystemTests/` |
-| **Architecture Tests** | `02_Architecture/01_SystemArchitecture/` | `06_Verification/04_ArchitectureTests/` |
+| **Unit Tests** | `project/03_Design/02_SoftwareDesign/` + `src/` | `src/<component>/tests/` |
+| **Integration Tests** | `project/02_Architecture/02_SoftwareArchitecture/` + `src/` | `project/06_Verification/02_IntegrationTests/` |
+| **System Tests** | `project/01_Requirements/02_SystemReqs/` + `project/02_Architecture/01_SystemArchitecture/` | `project/06_Verification/03_SystemTests/` |
+| **Architecture Tests** | `project/02_Architecture/01_SystemArchitecture/` | `project/06_Verification/04_ArchitectureTests/` |
 
 ## Responsibilities
 - Create test plans and test specifications for all test levels
@@ -26,22 +26,22 @@ You observe the **same-level definition/implementation layer** and produce test/
 
 ### 1. Unit Tests (Module Tests)
 - Verify individual software units in isolation
-- Output: `06_Verification/01_UnitTests/<module>_UnitTest.md`
+- Output: `src/<component>/tests/<module>_UnitTest.md` (alongside source code)
 - Automated using project test framework
 
 ### 2. Integration Tests
 - Verify interaction between software modules
-- Output: `06_Verification/02_IntegrationTests/<interface>_IntegrationTest.md`
+- Output: `project/06_Verification/02_IntegrationTests/<interface>_IntegrationTest.md`
 - Test data flow, error handling, protocol compliance
 
 ### 3. System Tests
 - Verify complete system against system requirements
-- Output: `06_Verification/03_SystemTests/<scenario>_SystemTest.md`
+- Output: `project/06_Verification/03_SystemTests/<scenario>_SystemTest.md`
 - Include hardware-in-the-loop testing where applicable
 
 ### 4. Architecture Tests
 - Verify system architecture compliance
-- Output: `06_Verification/04_ArchitectureTests/ArchitectureTest.md`
+- Output: `project/06_Verification/04_ArchitectureTests/ArchitectureTest.md`
 - Check component isolation, interface compliance, resource usage
 
 ## Test Case Template
@@ -60,12 +60,12 @@ You observe the **same-level definition/implementation layer** and produce test/
 ```
 
 ## Key Documents
-- `06_Verification/TestPlan.md`
-- `06_Verification/01_UnitTests/`
-- `06_Verification/02_IntegrationTests/`
-- `06_Verification/03_SystemTests/`
-- `06_Verification/04_ArchitectureTests/`
-- `06_Verification/TestReport.md`
+- `project/06_Verification/TestPlan.md`
+- `src/<component>/tests/` — Unit tests per component
+- `project/06_Verification/02_IntegrationTests/`
+- `project/06_Verification/03_SystemTests/`
+- `project/06_Verification/04_ArchitectureTests/`
+- `project/06_Verification/TestReport.md`
 
 ## Tasks
 - On each run, detect changes in observed layer → propose new/modified test cases

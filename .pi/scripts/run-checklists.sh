@@ -194,25 +194,25 @@ for i in "${!CHECKLIST_ITEMS[@]}"; do
     
     case "${ITEM}" in
         *"PMP"*)
-            [[ -f "${PROJECT_ROOT}/00_ProjectManagement/01_ProjectPlan/PMP.md" ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ -f "${PROJECT_ROOT}/project/00_ProjectManagement/01_ProjectPlan/PMP.md" ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"requirements"*|*"Requirements"*|*"SRS"*|*"SyRS"*)
-            [[ "$(find "${PROJECT_ROOT}/01_Requirements" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/project/01_Requirements" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"architecture"*|*"Architecture"*|*"SAD"*|*"SyAD"*)
-            [[ "$(find "${PROJECT_ROOT}/02_Architecture" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/project/02_Architecture" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"design"*|*"Design"*|*"SDD"*)
-            [[ "$(find "${PROJECT_ROOT}/03_Design" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/project/03_Design" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"implemented"*|*"source"*|*"code"*|*"Code"*)
-            [[ "$(find "${PROJECT_ROOT}/04_Implementation/src" -type f 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/src" -type f ! -name '.gitkeep' 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"test"*|*"Test"*)
-            [[ "$(find "${PROJECT_ROOT}/06_Verification" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/project/06_Verification" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *"risk"*|*"Risk"*|*"FMEA"*)
-            [[ "$(find "${PROJECT_ROOT}/08_RiskManagement" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
+            [[ "$(find "${PROJECT_ROOT}/project/08_RiskManagement" -name "*.md" 2>/dev/null | wc -l)" -gt 0 ]] && CHECKED="[✓]" && ((COMPLETED+=1)) || true
             ;;
         *)
             CHECKED="[?]"
@@ -236,7 +236,7 @@ NEXT_STEPS=()
 case "${ACTIVE_PHASE}" in
     00_project_initiation)
         NEXT_STEPS=(
-            "Create PMP document in 00_ProjectManagement/01_ProjectPlan/PMP.md"
+            "Create PMP document in project/00_ProjectManagement/01_ProjectPlan/PMP.md"
             "Define project organization and roles"
             "Perform software safety classification per IEC 62304"
             "Set up development toolchain (Git, CMake, CI/CD)"

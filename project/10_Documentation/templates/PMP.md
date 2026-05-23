@@ -127,18 +127,18 @@ This project follows **V-Model XT** (German Federal IT Standard) adapted for med
 ## 6. Risk Management
 
 Risk management is conducted per ISO 14971:2019 and documented in:
-- `08_RiskManagement/01_RiskAnalysis/RiskManagementPlan.md`
-- `08_RiskManagement/02_FMEA/SystemFMEA.md`
+- `project/08_RiskManagement/01_RiskAnalysis/RiskManagementPlan.md`
+- `project/08_RiskManagement/02_FMEA/SystemFMEA.md`
 
 ## 7. Quality Assurance
 
 Quality assurance is conducted per ISO 13485:2016 and documented in:
-- `00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
+- `project/00_ProjectManagement/03_QualityAssurance/QA_Plan.md`
 
 ## 8. Configuration Management
 
 Configuration management is documented in:
-- `00_ProjectManagement/04_ConfigurationManagement/CM_Plan.md`
+- `project/00_ProjectManagement/04_ConfigurationManagement/CM_Plan.md`
 
 ---
 

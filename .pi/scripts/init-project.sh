@@ -127,15 +127,15 @@ ${COMPONENTS:-GUI CTRL FW}
 View the [Project Dashboard](dashboard/index.html) for current status.
 
 ## Quick Links
-- [Project Management](00_ProjectManagement/)
-- [Requirements](01_Requirements/)
-- [Architecture](02_Architecture/)
-- [Design](03_Design/)
-- [Implementation](04_Implementation/)
-- [Test & Verification](06_Verification/)
-- [Risk Management](08_RiskManagement/)
-- [Regulatory](09_Regulatory/)
-- [Documentation](10_Documentation/)
+- [Source Code](src/)
+- [Project Management](project/00_ProjectManagement/)
+- [Requirements](project/01_Requirements/)
+- [Architecture](project/02_Architecture/)
+- [Design](project/03_Design/)
+- [Test & Verification](project/06_Verification/)
+- [Risk Management](project/08_RiskManagement/)
+- [Regulatory](project/09_Regulatory/)
+- [Documentation](project/10_Documentation/)
 EOF
 
 echo ""

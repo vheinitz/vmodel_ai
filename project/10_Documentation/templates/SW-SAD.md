@@ -25,8 +25,8 @@ The architecture covers:
 - Deployment architecture
 
 ### 1.3 References
-- System Architecture: `../../01_SystemArchitecture/SystemArchitecture_SyAD.md`
-- Software Requirements: `../../../01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
+- System Architecture: `project/02_Architecture/01_SystemArchitecture/SystemArchitecture_SyAD.md`
+- Software Requirements: `project/01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
 - IEC 62304:2006+AMD1:2015 §5.3
 
 ## 2. Architecture Overview

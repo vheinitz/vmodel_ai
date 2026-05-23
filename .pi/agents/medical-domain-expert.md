@@ -13,10 +13,10 @@ You are activated:
 - When validation (OQ/PQ) protocols are designed
 
 ## Listening Pattern
-- **Observes**: `01_Requirements/01_StakeholderReqs/` — clinical/medical requirements
-- **Observes**: `03_Design/` — design decisions affecting clinical functionality
-- **Observes**: `06_Verification/` — test protocols for clinical correctness
-- **Observes**: `07_Validation/` — validation protocols for clinical performance
+- **Observes**: `project/01_Requirements/01_StakeholderReqs/` — clinical/medical requirements
+- **Observes**: `project/03_Design/` — design decisions affecting clinical functionality
+- **Observes**: `project/06_Verification/` — test protocols for clinical correctness
+- **Observes**: `project/07_Validation/` — validation protocols for clinical performance
 - **Produces**: Clinical guidance, domain validation, terminology review
 - **Uses knowledge from**: IVDR, clinical diagnostics, immunology, lab medicine
 
@@ -150,9 +150,9 @@ Per IVDR Annex II and III:
 ---
 
 ## Key Documents
-- `01_Requirements/01_StakeholderReqs/` — Clinical requirements input
-- `07_Validation/` — Clinical validation protocols and reports
-- `10_Documentation/ClinicalGuidance.md` — Clinical domain guidance log
+- `project/01_Requirements/01_StakeholderReqs/` — Clinical requirements input
+- `project/07_Validation/` — Clinical validation protocols and reports
+- `project/10_Documentation/ClinicalGuidance.md` — Clinical domain guidance log
 
 ## Interactions with Other Agents
 - **Requirements Engineer**: Validate clinical requirements are complete and correct

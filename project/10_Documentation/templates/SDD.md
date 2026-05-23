@@ -15,8 +15,8 @@
 This document describes the detailed software design for the **{COMPONENT_NAME}** component.
 
 ### 1.2 References
-- Software Architecture: `../../../02_Architecture/02_SoftwareArchitecture/SoftwareArchitecture_SW-SAD.md`
-- Software Requirements: `../../../01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
+- Software Architecture: `project/02_Architecture/02_SoftwareArchitecture/SoftwareArchitecture_SW-SAD.md`
+- Software Requirements: `project/01_Requirements/03_SoftwareReqs/SoftwareRequirements_SRS.md`
 
 ## 2. Module Design
 
