@@ -26,13 +26,23 @@ This is a **V-Model XT development project** for a **medical laboratory automati
 │   ├── skills/          ← 8 skills (checklists, risk analysis, traceability, architecture, etc.)
 │   └── scripts/         ← 5 automation scripts
 ├── 00_ProjectManagement/  ← PMP, QA Plan, CM Plan, Project Manual
-├── 01_Requirements/       ← Stakeholder → System → Software → Hardware reqs
+├── 01_Requirements/       ← Stakeholder → System → Software → HW reqs
+│   ├── 00_UserNeeds_Lastenheft/  ← WHAT users need (Lastenheft)
+│   ├── 00_RiskInputs/            ← Links to 08_RiskManagement (hazard analysis)
+│   ├── 02_SystemReqs/            ← Binding system reqs (Pflichtenheft) incl. safety
+│   ├── 03_SoftwareReqs/          ← Software-specific requirements
+│   ├── 04_HardwareReqs/          ← Hardware-specific requirements
+│   └── README.md                 ← Lastenheft → Risk → Pflichtenheft flow
 ├── 02_Architecture/       ← System Arch → SW Arch → HW Arch
 ├── 03_Design/             ← System Design → SW Design → HW Design
 ├── 04_Implementation/     ← src/ (code), 01_UnitTests/
 ├── 05_Integration/        ← SW Integration + System Integration plans
 ├── 06_Verification/       ← Unit Tests → Integration Tests → System Tests → Architecture Tests
-├── 07_Validation/         ← OQ (Operational Qualification) + PQ (Performance Qualification)
+├── 07_Validation/         ← IQ → OQ → PQ
+│   ├── 00_InstallationQualification/  ← IQ: installed correctly?
+│   ├── 01_OperationalQualification/   ← OQ: works in target environment?
+│   ├── 02_PerformanceQualification/   ← PQ: performs to user needs?
+│   └── README.md
 ├── 08_RiskManagement/     ← Risk Analysis, FMEA, Safety Classification
 ├── 09_Regulatory/         ← IEC 62304, ISO 14971, IVDR compliance matrices
 ├── 10_Documentation/      ← Templates (PMP, SRS, SAD, SDD, FMEA, TestPlan, ...)

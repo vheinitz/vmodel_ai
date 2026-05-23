@@ -7,8 +7,9 @@ Each phase has defined entry and exit criteria:
 
 | Phase | Entry Criteria | Exit Criteria |
 |-------|---------------|---------------|
-| **Stakeholder Reqs** | Project approved (G1) | Stakeholder reqs baselined, reviewed (G2). **Must pass requirements quality checklist (`.pi/skills/requirements-quality-checklist.md`).** Every requirement has Verification Method and Approving Role. NFRs have measurable criteria. |
-| **System Reqs** | Stakeholder reqs baselined | System reqs baselined, traced to stakeholder reqs (G2). Same quality standards as Stakeholder Reqs: measurable, attributed, approved. |
+| **User Needs (Lastenheft)** | Project approved (G1) | User needs documented, reviewed. Written in stakeholder language. |
+| **Risk Analysis** | User needs documented | Hazards identified, risk controls defined → feed into System Reqs |
+| **System Reqs (Pflichtenheft)** | User needs + Risk Analysis complete | System reqs baselined, includes safety reqs from risk controls, traced to user needs (G2). Same quality standards: measurable, attributed, approved. |
 | **System Architecture** | System reqs baselined | Architecture defined, reviewed (G3) |
 | **SW Reqs** | System architecture defined | SW reqs baselined, traced to system reqs (G2) |
 | **SW Architecture** | SW reqs baselined | SW architecture defined, reviewed (G3) |
@@ -22,6 +23,8 @@ Each phase has defined entry and exit criteria:
 ## Traceability Rules
 
 Every artifact must be traceable:
+- **User Needs → Risk Analysis**: Each user need assessed for hazards
+- **Risk Analysis → System Reqs**: Risk controls become safety requirements
 - **Requirements → Architecture**: Each requirement allocated to ≥1 architectural component
 - **Architecture → Design**: Each architectural component has ≥1 design element
 - **Design → Implementation**: Each design element has corresponding source code
