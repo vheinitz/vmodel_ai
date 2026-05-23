@@ -7,8 +7,8 @@ Each phase has defined entry and exit criteria:
 
 | Phase | Entry Criteria | Exit Criteria |
 |-------|---------------|---------------|
-| **Stakeholder Reqs** | Project approved (G1) | Stakeholder reqs baselined, reviewed (G2) |
-| **System Reqs** | Stakeholder reqs baselined | System reqs baselined, traced to stakeholder reqs (G2) |
+| **Stakeholder Reqs** | Project approved (G1) | Stakeholder reqs baselined, reviewed (G2). **Must pass requirements quality checklist (`.pi/skills/requirements-quality-checklist.md`).** Every requirement has Verification Method and Approving Role. NFRs have measurable criteria. |
+| **System Reqs** | Stakeholder reqs baselined | System reqs baselined, traced to stakeholder reqs (G2). Same quality standards as Stakeholder Reqs: measurable, attributed, approved. |
 | **System Architecture** | System reqs baselined | Architecture defined, reviewed (G3) |
 | **SW Reqs** | System architecture defined | SW reqs baselined, traced to system reqs (G2) |
 | **SW Architecture** | SW reqs baselined | SW architecture defined, reviewed (G3) |
@@ -27,6 +27,15 @@ Every artifact must be traceable:
 - **Design → Implementation**: Each design element has corresponding source code
 - **Requirements → Tests**: Each requirement has ≥1 test case
 - **Risks → Requirements → Tests**: Risk controls traced to requirements and tests
+
+### Mandatory Requirement Attributes (every requirement document)
+- **Unique ID** with hierarchical numbering (insertion-safe)
+- **Priority**: Mandatory / Optional
+- **Verification Method**: Test / Inspection / Analysis / Demonstration
+- **Approving Role**: Named stakeholder (Clinical Stakeholder, Lab Director, QA, Regulatory Affairs, Service)
+- **Source**: Where this requirement originated
+
+See `.pi/skills/requirements-quality-checklist.md` for the full quality gate.
 
 ## Document State Machine
 ```

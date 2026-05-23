@@ -298,17 +298,95 @@ body {
 
 <script>
 // ============================================================
-// Dashboard Data Loader
+// Embedded fallback data — used when fetch() fails (file:// CORS)
+// ============================================================
+const EMBEDDED_STATUS = {
+  "project": "Unconfigured Project",
+  "number": "TEMPLATE",
+  "safety_class": "?",
+  "last_update": "No data loaded",
+  "phases": {
+    "00_project_initiation": { "status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0 },
+    "01_requirements":     { "status": "pending", "completion": 0, "checklist_total": 18, "checklist_done": 0 },
+    "02_architecture":     { "status": "pending", "completion": 0, "checklist_total": 15, "checklist_done": 0 },
+    "03_design":           { "status": "pending", "completion": 0, "checklist_total": 12, "checklist_done": 0 },
+    "04_implementation":   { "status": "pending", "completion": 0, "checklist_total": 12, "checklist_done": 0 },
+    "05_integration":      { "status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0 },
+    "06_verification":     { "status": "pending", "completion": 0, "checklist_total": 13, "checklist_done": 0 },
+    "07_validation":       { "status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0 },
+    "08_release":          { "status": "pending", "completion": 0, "checklist_total": 9,  "checklist_done": 0 },
+    "09_maintenance":      { "status": "pending", "completion": 0, "checklist_total": 8,  "checklist_done": 0 }
+  },
+  "decision_gates": {
+    "G1_project_approved": false, "G2_requirements_baselined": false,
+    "G3_architecture_defined": false, "G4_design_completed": false,
+    "G5_implementation_done": false, "G6_integration_done": false,
+    "G7_verification_done": false, "G8_validation_done": false,
+    "G9_project_completed": false
+  },
+  "metrics": {
+    "total_requirements": 0, "requirements_with_tests": 0,
+    "total_risk_items": 0, "risk_items_controlled": 0,
+    "total_test_cases": 0, "test_cases_passed": 0, "test_cases_failed": 0,
+    "code_coverage_percent": 0.0, "open_defects": 0, "resolved_defects": 0
+  },
+  "agents": {
+    "project-manager":{"last_run":null,"status":"idle","suggestions":[]},
+    "requirements-engineer":{"last_run":null,"status":"idle","suggestions":[]},
+    "system-architect":{"last_run":null,"status":"idle","suggestions":[]},
+    "software-architect":{"last_run":null,"status":"idle","suggestions":[]},
+    "developer":{"last_run":null,"status":"idle","suggestions":[]},
+    "tester":{"last_run":null,"status":"idle","suggestions":[]},
+    "risk-manager":{"last_run":null,"status":"idle","suggestions":[]},
+    "qa-manager":{"last_run":null,"status":"idle","suggestions":[]},
+    "innovation-manager":{"last_run":null,"status":"idle","suggestions":[]},
+    "medical-domain-expert":{"last_run":null,"status":"idle","suggestions":[]}
+  },
+  "artifact_counts": {}
+};
+
+// ============================================================
+// Dashboard Data Loader — tries fetch() with file:// fallback
 // ============================================================
 async function loadData() {
+    let data = null;
+    let source = '';
+
+    // Try fetching status.json (works with HTTP server)
     try {
         const resp = await fetch('data/status.json?' + Date.now());
-        const data = await resp.json();
-        render(data);
+        if (resp.ok) {
+            data = await resp.json();
+            source = ' (live)';
+        }
     } catch (e) {
-        console.error('Failed to load status.json:', e);
-        document.getElementById('projectInfo').textContent = '⚠ Could not load project data. Ensure status.json exists.';
+        // fetch() blocked — likely file:// protocol
     }
+
+    // Otherwise check for the JSON embedded in the page by update-dashboard.sh
+    if (!data) {
+        try {
+            const embedded = document.getElementById('embedded-status-data');
+            if (embedded && embedded.textContent.trim()) {
+                data = JSON.parse(embedded.textContent);
+                source = ' (embedded)';
+            }
+        } catch (e) {}
+    }
+
+    // Fall back to compiled-in defaults so the page always renders
+    if (!data) {
+        data = EMBEDDED_STATUS;
+        source = ' (default — run make init + make dashboard)';
+    }
+
+    // Inject source note
+    const infoEl = document.getElementById('projectInfo');
+    if (infoEl && !infoEl.dataset.source) {
+        infoEl.dataset.source = source;
+    }
+
+    render(data);
 }
 
 // ============================================================
@@ -444,13 +522,24 @@ function renderOverallProgress(data) {
 
 function renderMetrics(data) {
     const m = data.metrics || {};
+    const ac = data.artifact_counts || {};
+    
+    // Sum artifact counts by category
+    const totalReqs = (ac.stakeholder_reqs || 0) + (ac.system_reqs || 0) + (ac.software_reqs || 0) + (ac.hardware_reqs || 0);
+    const totalArch = (ac.system_arch || 0) + (ac.software_arch || 0) + (ac.hardware_arch || 0);
+    const totalDesign = (ac.system_design || 0) + (ac.software_design || 0);
+    const totalTests = (ac.verification_files || 0) + (ac.integration_test_files || 0) + (ac.system_test_files || 0) + (ac.unit_test_files || 0);
+    const totalRisk = (ac.risk_docs || 0) + (ac.fmea_docs || 0);
+    
     document.getElementById('keyMetrics').innerHTML = `
-        <div class="metric"><div class="value">${m.total_requirements || 0}</div><div class="label">Requirements</div></div>
-        <div class="metric"><div class="value">${m.code_coverage_percent || 0}%</div><div class="label">Code Coverage</div></div>
-        <div class="metric"><div class="value">${m.total_test_cases || 0}</div><div class="label">Test Cases</div></div>
+        <div class="metric"><div class="value">${totalReqs || 0}</div><div class="label">Artifacts: Requirements</div></div>
+        <div class="metric"><div class="value">${totalArch || 0}</div><div class="label">Artifacts: Architecture</div></div>
+        <div class="metric"><div class="value">${totalDesign || 0}</div><div class="label">Artifacts: Design</div></div>
+        <div class="metric"><div class="value">${ac.source_files || 0}</div><div class="label">Source Files</div></div>
+        <div class="metric"><div class="value">${totalTests || 0}</div><div class="label">Test Artifacts</div></div>
+        <div class="metric"><div class="value">${totalRisk || 0}</div><div class="label">Risk Documents</div></div>
         <div class="metric"><div class="value" style="color:${(m.open_defects||0) > 0 ? 'var(--danger)' : 'var(--success)'}">${m.open_defects || 0}</div><div class="label">Open Defects</div></div>
-        <div class="metric"><div class="value">${m.total_risk_items || 0}</div><div class="label">Risk Items</div></div>
-        <div class="metric"><div class="value">${m.risk_items_controlled || 0}/${m.total_risk_items || 0}</div><div class="label">Risks Controlled</div></div>
+        <div class="metric"><div class="value">${m.code_coverage_percent || 0}%</div><div class="label">Code Coverage</div></div>
     `;
 }
 
@@ -514,5 +603,9 @@ function renderSuggestions(data) {
 // Auto-load on page load
 document.addEventListener('DOMContentLoaded', loadData);
 </script>
+<script id="embedded-status-data" type="application/json">{"project": "Unconfigured Project", "number": "TEMPLATE", "safety_class": "?", "last_update": "2026-05-23T02:56:12+02:00", "phases": {"00_project_initiation": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "01_requirements": {"status": "pending", "completion": 0, "checklist_total": 18, "checklist_done": 0}, "02_architecture": {"status": "pending", "completion": 0, "checklist_total": 15, "checklist_done": 0}, "03_design": {"status": "pending", "completion": 0, "checklist_total": 12, "checklist_done": 0}, "04_implementation": {"status": "pending", "completion": 0, "checklist_total": 12, "checklist_done": 0}, "05_integration": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "06_verification": {"status": "pending", "completion": 0, "checklist_total": 13, "checklist_done": 0}, "07_validation": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "08_release": {"status": "pending", "completion": 0, "checklist_total": 9, "checklist_done": 0}, "09_maintenance": {"status": "pending", "completion": 0, "checklist_total": 8, "checklist_done": 0}}, "decision_gates": {"G1_project_approved": false, "G2_requirements_baselined": false, "G3_architecture_defined": false, "G4_design_completed": false, "G5_implementation_done": false, "G6_integration_done": false, "G7_verification_done": false, "G8_validation_done": false, "G9_project_completed": false}, "metrics": {"total_requirements": 0, "requirements_with_tests": 0, "total_risk_items": 0, "risk_items_controlled": 0, "total_test_cases": 0, "test_cases_passed": 0, "test_cases_failed": 0, "code_coverage_percent": 0.0, "open_defects": 0, "resolved_defects": 0}, "agents": {"project-manager": {"last_run": null, "status": "idle", "suggestions": []}, "requirements-engineer": {"last_run": null, "status": "idle", "suggestions": []}, "system-architect": {"last_run": null, "status": "idle", "suggestions": []}, "software-architect": {"last_run": null, "status": "idle", "suggestions": []}, "developer": {"last_run": null, "status": "idle", "suggestions": []}, "tester": {"last_run": null, "status": "idle", "suggestions": []}, "risk-manager": {"last_run": null, "status": "idle", "suggestions": []}, "qa-manager": {"last_run": null, "status": "idle", "suggestions": []}, "innovation-manager": {"last_run": null, "status": "idle", "suggestions": []}, "medical-domain-expert": {"last_run": null, "status": "idle", "suggestions": []}}, "artifact_counts": {"stakeholder_reqs": 0, "system_reqs": 0, "software_reqs": 0, "hardware_reqs": 0, "system_arch": 0, "software_arch": 0, "hardware_arch": 0, "system_design": 0, "software_design": 0, "source_files": 0, "unit_test_files": 0, "verification_files": 0, "integration_test_files": 0, "system_test_files": 0, "risk_docs": 0, "fmea_docs": 0, "project_mgmt": 0}}</script>
 </body>
+
+<!-- Embedded status data injected by update-dashboard.sh -->
+
 </html>

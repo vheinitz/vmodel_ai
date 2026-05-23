@@ -30,15 +30,24 @@ When invoked, this skill analyzes the current project state and provides the app
 - [ ] System requirements derived and baselined
 - [ ] Software requirements derived and baselined
 - [ ] Hardware requirements documented
-- [ ] Interface requirements specified (CAN, LIS, GUI-Device)
-- [ ] Performance requirements specified
+- [ ] Interface requirements specified (LIS, device-control, image-output)
+- [ ] Performance requirements specified with measurable acceptance criteria
 - [ ] Safety requirements identified and classified
 - [ ] Regulatory requirements captured
-- [ ] Usability requirements defined
+- [ ] Usability requirements defined with measurable targets
 - [ ] Requirements traceability matrix established
 - [ ] Requirements review completed
-- [ ] All requirements have unique IDs
+- [ ] All requirements have unique hierarchical IDs
 - [ ] All requirements are testable
+- [ ] Every requirement has a Verification Method and Approving Role
+- [ ] Every NFR has at least one quantitative acceptance criterion
+- [ ] IVD-specific requirements covered: carryover limits, sample volume, reagent stability, cleaning, time-to-first-result
+- [ ] Recovery scenarios specified (power loss, emergency stop, interruption)
+- [ ] Optional features explicitly tagged with Type/Priority, not just prose
+- [ ] LIS requirements cover bidirectional communication and multi-LIS routing
+- [ ] Safety gate requirements are verifiable (e.g., button disabled until condition met)
+- [ ] Open questions section populated for stakeholder decisions needed
+- [ ] Requirements quality checklist (`.pi/skills/requirements-quality-checklist.md`) completed
 - [ ] Ambiguous requirements resolved
 - [ ] Conflicting requirements resolved
 - [ ] Requirements change process defined

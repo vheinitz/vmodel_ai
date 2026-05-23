@@ -183,3 +183,23 @@ for phase, info in data['phases'].items():
     print(f'  {phase:25s} [{bar}] {info[\"status\"]:>12s} ({info[\"completion\"]:>3d}%)')
 "
 echo ""
+
+# --- Embed status.json into dashboard HTML for file:// viewing ---
+DASHBOARD="${PROJECT_ROOT}/dashboard/index.html"
+if [[ -f "${DASHBOARD}" && -f "${STATUS_FILE}" ]]; then
+    python3 - "$STATUS_FILE" "$DASHBOARD" << 'PYEOF'
+import json, re, sys
+status_file = sys.argv[1]
+dashboard_file = sys.argv[2]
+status = json.load(open(status_file))
+status_json = json.dumps(status)
+with open(dashboard_file, "r") as f:
+    html = f.read()
+html = re.sub(r'<script id="embedded-status-data"[^>]*>.*?</script>', '', html, flags=re.DOTALL)
+new_block = '<script id="embedded-status-data" type="application/json">' + status_json + '</script>'
+html = html.replace('</body>', new_block + '\n</body>')
+with open(dashboard_file, "w") as f:
+    f.write(html)
+print('  Dashboard HTML embedded with live status data.')
+PYEOF
+fi

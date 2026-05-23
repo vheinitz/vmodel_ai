@@ -17,18 +17,8 @@ help:  ## Show this help
 init:  ## Initialize a new project (interactive)
 	@bash $(SCRIPTS)/init-project.sh
 
-status:  ## Show current project status
-	@python3 -c "\
-import json;\
-with open('dashboard/data/status.json') as f: d = json.load(f);\
-print(f'Project: {d[\"project\"]} ({d[\"number\"]})');\
-print(f'Safety Class: {d[\"safety_class\"]}');\
-print(f'Last Update: {d[\"last_update\"]}');\
-print();\
-for p, i in d['phases'].items():\
-    bar = '█'*min(int(i['completion']/10),10) + '░'*max(10-int(i['completion']/10),0);\
-    print(f'  {p:25s} [{bar}] {i[\"status\"]:>12s} ({i[\"completion\"]:>3d}%)')\
-" 2>/dev/null || echo "No status data yet. Run 'make dashboard' first."
+status:  ## Show current project status with artifact counts
+	@python3 $(SCRIPTS)/status.py
 
 dashboard:  ## Update dashboard data
 	@bash $(SCRIPTS)/update-dashboard.sh
@@ -59,7 +49,13 @@ all: dashboard agents checklists traceability  ## Run full analysis cycle
 	@echo "3. Checklists evaluated"
 	@echo "4. Traceability matrix generated"
 	@echo ""
-	@echo "Open dashboard/index.html to view results."
+	@echo "Run 'make serve' and open http://localhost:8080/dashboard/ to view results."
+
+serve:  ## Start HTTP server for dashboard (http://localhost:8080)
+	@echo "Starting HTTP server at http://localhost:8080"
+	@echo "Open http://localhost:8080/dashboard/ in your browser"
+	@echo "Press Ctrl+C to stop"
+	@python3 -m http.server 8080
 
 count:  ## Count all project artifacts
 	@echo "Project Artifact Count:"
