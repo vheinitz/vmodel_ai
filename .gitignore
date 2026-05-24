@@ -48,6 +48,9 @@ Thumbs.db
 # Dashboard data (runtime)
 dashboard/data/status.json
 dashboard/data/project.json
+dashboard/data/history.json
+dashboard/data/reports/
+!dashboard/data/reports/.gitkeep
 
 # Secrets
 .env

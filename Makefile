@@ -41,21 +41,37 @@ checklists:  ## Run checklists for current phase
 traceability:  ## Generate traceability matrix
 	@bash $(SCRIPTS)/generate-traceability.sh
 
-all: dashboard agents checklists traceability  ## Run full analysis cycle
+reports:  ## Render project artifacts to HTML for dashboard
+	@bash $(SCRIPTS)/generate-reports.sh
+
+all: dashboard agents checklists traceability reports  ## Run full analysis cycle
 	@echo ""
 	@echo "Full analysis cycle complete."
 	@echo "1. Dashboard data updated"
 	@echo "2. Agents triggered"
 	@echo "3. Checklists evaluated"
 	@echo "4. Traceability matrix generated"
+	@echo "5. Reports rendered to HTML"
 	@echo ""
 	@echo "Run 'make serve' and open http://localhost:8080/dashboard/ to view results."
 
-serve:  ## Start HTTP server for dashboard (http://localhost:8080)
-	@echo "Starting HTTP server at http://localhost:8080"
+serve:  ## Start bidirectional dashboard server (http://localhost:8080)
+	@python3 $(SCRIPTS)/dashboard-server.py
+
+serve-static:  ## Start static HTTP server (no pi-launch API)
+	@echo "Starting static HTTP server at http://localhost:8080"
 	@echo "Open http://localhost:8080/dashboard/ in your browser"
 	@echo "Press Ctrl+C to stop"
 	@python3 -m http.server 8080
+
+prompt:  ## Launch pi with a prompt (usage: make prompt TEXT="your prompt")
+	@if [ -z "$(TEXT)" ]; then \
+		echo "Usage: make prompt TEXT=\"your prompt here\""; \
+	else \
+		echo "Launching pi with prompt: $(TEXT)"; \
+		bash $(SCRIPTS)/log-activity.sh "user" "prompt-via-make" "$(TEXT)"; \
+		pi '$(TEXT)'; \
+	fi
 
 count:  ## Count all project artifacts
 	@echo "Project Artifact Count:"
@@ -72,6 +88,7 @@ clean:  ## Reset dashboard data (caution!)
 	@echo "WARNING: This will reset dashboard data."
 	@read -p "Are you sure? [y/N] " confirm; \
 	if [ "$$confirm" = "y" ]; then \
-		cp dashboard/data/status.json dashboard/data/status.json.bak; \
-		echo "Backup saved to status.json.bak"; \
+		cp dashboard/data/status.json dashboard/data/status.json.bak 2>/dev/null || true; \
+		cp dashboard/data/history.json dashboard/data/history.json.bak 2>/dev/null || true; \
+		echo "Backups saved to .bak files"; \
 	fi

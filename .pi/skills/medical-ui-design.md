@@ -294,7 +294,6 @@ User Preference → System Language → English (default) → Key (error state)
 | **Web (React/Vue)** | ★★★ | ★★ | ★★★ | ★★★★★ | ★★★★★ | ★★★★★ | Non-safety UI only |
 | **Embedded (LVGL/TouchGFX)** | ★★★★ | ★★★★ | ★★★★ | ★★ | ★★ | ★ | Firmware-Only |
 
-> **Recommendation**: Qt 6 QML for main tool + data analyzer + config editor. LVGL/TouchGFX for firmware-embedded UI. Use web technologies only for non-safety-critical dashboards/reporting.
 
 ---
 

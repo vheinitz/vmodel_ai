@@ -172,6 +172,10 @@ with open('${STATUS_FILE}', 'w') as f:
 
 echo ""
 echo "✅ Dashboard data updated successfully!"
+
+# Log activity
+bash "${SCRIPT_DIR}/log-activity.sh" "dashboard-updater" "scanned-project" "Reqs:${REQS_SYSTEM} Arch:${ARCH_SYS} Src:${IMPL_SRC} Risk:${RISK_FMEA}" 2>/dev/null || true
+
 echo ""
 echo "Phase Status:"
 python3 -c "

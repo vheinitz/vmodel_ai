@@ -87,6 +87,9 @@ run_agent() {
     
     # Mark as pending — results will be filled by the AI agent
     update_agent_status "${agent}" "pending" "[]"
+    
+    # Log activity
+    bash "${SCRIPT_DIR}/log-activity.sh" "${agent}" "triggered" "Agent triggered for analysis" 2>/dev/null || true
 }
 
 # --- Main ---
