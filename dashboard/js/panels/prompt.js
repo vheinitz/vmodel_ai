@@ -25,7 +25,7 @@ async function renderPanelPrompt() {
                 📁 ${projectDir}
             </div>
             <textarea id="prompt-textarea" class="prompt-input"
-                placeholder="Type a prompt for the AI coding agent...&#10;&#10;Examples:&#10;• Analyze src/MainTool/ and suggest UI improvements&#10;• Review requirements for completeness&#10;• Generate unit tests for DataAnalyser&#10;• Run innovation review" 
+                placeholder="Type a prompt for the AI coding agent...&#10;&#10;Examples:&#10;• suggest UI improvements&#10;• Review requirements for completeness&#10;• Generate unit tests for DataAnalyser&#10;• Run innovation review" 
             ></textarea>
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">

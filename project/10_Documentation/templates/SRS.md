@@ -1,4 +1,16 @@
-# Software Requirements Specification (SRS)
+---
+id: DOC-SRS-{COMPONENT}
+type: document-cover
+document_kind: SRS
+component: {COMPONENT}
+status: draft
+version: v00.01
+created: {DATE}
+updated: {DATE}
+covers_artifacts_in: project/01_Requirements/03_SoftwareReqs/{COMPONENT}/
+---
+
+# Software Requirements Specification (SRS) — Cover Document
 
 **Document ID:** {PROJECT_NUMBER}_CD_{COMPONENT}_SRS_v{MAJOR}.{MINOR}  
 **Component:** {COMPONENT_NAME} (AC / AD / AF)  
@@ -7,6 +19,13 @@
 **Date:** {DATE}  
 **Author:** Requirements Engineer  
 **Reviewer:** System Architect  
+
+> **Note on structure (since template v2):** Individual requirements live in their own files
+> under `project/01_Requirements/03_SoftwareReqs/{COMPONENT}/REQ-SW-{COMPONENT}-NNN.md`, each
+> with YAML frontmatter per `.pi/rules/artifact-frontmatter.md`. This cover document holds
+> document-level metadata, scope, definitions, interface summaries and regulatory mapping.
+> The per-requirement details in sections 3, 4 and 6 below are kept here as **examples of
+> the template** for human readers; the authoritative source is the per-file artifacts.
 
 ---
 

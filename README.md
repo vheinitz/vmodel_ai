@@ -93,7 +93,7 @@ Place any existing artifacts (requirements docs, source code, architecture diagr
 
 | Directory | Content |
 |-----------|---------|
-| `src/` | All source code (MainTool, DataAnalyser, ConfigEditor, Firmware) + unit tests |
+| `src/` | All source code (e.g. UI, middleware, Firmware, internal tools) + unit tests |
 | `project/00_ProjectManagement/` | Project plans, PMP, QA plan, CM plan |
 | `project/01_Requirements/` | Stakeholder, System, Software, Hardware requirements |
 | `project/02_Architecture/` | System Architecture (SyAD), SW Architecture (SW-SAD), HW Architecture |
@@ -107,7 +107,7 @@ Place any existing artifacts (requirements docs, source code, architecture diagr
 | `project/10_Documentation/` | Document templates, glossaries, generated documents, document index |
 | `project/99_Archive/` | Archived versions, superseded documents |
 
-> **Code lives in `src/`**, organized by standalone component (MainTool, DataAnalyser, ConfigEditor, Firmware).
+> **Code lives in `src/`**, organized by standalone components
 > Each component has its own `tests/` subdirectory for unit tests.
 > All project management artifacts live under `project/`. Integration/system/architecture tests are in `project/06_Verification/`.
 

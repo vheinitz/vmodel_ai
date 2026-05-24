@@ -286,9 +286,9 @@ User Preference → System Language → English (default) → Key (error state)
 
 | Technology | Medical Fit | Safety | Perf | i18n | a11y | Cross-Plat | Overall |
 |-----------|-------------|--------|------|------|------|-----------|---------|
-| **Qt 6 (QML/C++)** | ★★★★★ | ★★★★ | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | **Best fit** |
+| **Qt 6 (QML/C++)** | ★★★★★ | ★★★★ | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | Best fit if license available |
 | **Qt Widgets (C++)** | ★★★★★ | ★★★★ | ★★★★ | ★★★★ | ★★★ | ★★★★ | Good |
-| **Electron (JS/HTML)** | ★★★ | ★★ | ★★★ | ★★★★★ | ★★★★★ | ★★★★★ | Web-only use cases |
+| **Electron (JS/HTML)** | ★★★ | ★★ | ★★★ | ★★★★★ | ★★★★★ | ★★★★★ | **Use this**  |
 | **Flutter (Dart)** | ★★★ | ★★★ | ★★★★ | ★★★★ | ★★★★ | ★★★★ | Emerging |
 | **wxWidgets (C++)** | ★★★★ | ★★★★ | ★★★ | ★★★ | ★★ | ★★★ | Legacy compatible |
 | **Web (React/Vue)** | ★★★ | ★★ | ★★★ | ★★★★★ | ★★★★★ | ★★★★★ | Non-safety UI only |

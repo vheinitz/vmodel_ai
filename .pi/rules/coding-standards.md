@@ -30,12 +30,6 @@ Before implementing any module:
 | **Exception**: Trivial helper structs/enums used ONLY by that class may live in the same header | Keep it under ~10 lines for helpers |
 | **Exception**: Free functions forming a cohesive utility namespace may share a file | `<module>_utils.hpp` / `<module>_utils.cpp` |
 
-```
-✅ src/MainTool/workflow/ProtocolEngine.hpp   → class ProtocolEngine
-✅ src/MainTool/workflow/ProtocolEngine.cpp
-✅ src/MainTool/workflow/ProtocolTypes.hpp    → enum ProtocolState, struct ProtocolConfig
-❌ src/MainTool/workflow/WorkflowClasses.hpp  → class ProtocolEngine, class StepRunner, class ...
-```
 
 ### 1.2 Directory Structure Mirrors Architecture
 

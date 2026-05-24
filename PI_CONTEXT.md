@@ -26,14 +26,6 @@ This is a **V-Model XT development project** for a **medical laboratory automati
 │   ├── skills/          ← 11 skills (checklists, risk analysis, traceability, architecture, medical UI design, etc.)
 │   └── scripts/         ← 5 automation scripts
 ├── src/                   ← All source code (separated from project management)
-│   ├── MainTool/          ← Main instrument tool application
-│   │   └── tests/         ← Unit tests for MainTool
-│   ├── DataAnalyser/      ← Standalone data analysis application
-│   │   └── tests/
-│   ├── ConfigEditor/      ← Standalone configuration editor
-│   │   └── tests/
-│   └── Firmware/          ← Embedded firmware / middleware / control
-│       └── tests/
 ├── project/               ← All V-Model project management & documentation
 │   ├── 00_ProjectManagement/  ← PMP, QA Plan, CM Plan, Project Manual
 │   ├── 01_Requirements/       ← Stakeholder → System → Software → HW reqs
@@ -97,15 +89,39 @@ Stakeholder Input
 ## Key Commands
 
 ```bash
-make init          # Initialize project (prompts for name, number, class, components)
-make dashboard     # Scan project and update dashboard data
-make agents        # Trigger all active agents to analyze and produce
-make checklists    # Evaluate phase checklists
-make traceability  # Generate requirements-to-tests traceability matrix
-make all           # Full cycle: dashboard + agents + checklists + traceability
-make innovate      # Trigger innovation review (on demand)
+make init           # Initialize project (prompts for name, number, class, components)
+make dashboard      # Scan project and update dashboard data
+make agents         # Trigger all active agents to analyze and produce
+make checklists     # Evaluate phase checklists
+make traceability   # Generate requirements-to-tests traceability matrix
+make all            # Full cycle: dashboard + agents + checklists + traceability
+make innovate       # Trigger innovation review (on demand)
 make medical-review # Trigger clinical domain review (on demand)
+
+# Automation (template-driven, deterministic — no LLM call required)
+make validate       # Validate artifact frontmatter under project/ (writes validation.json)
+make gates          # Evaluate decision-gate readiness (patches status.json + writes gates.json)
+make validate-example # Validate the seed example (examples/coag-analyzer/)
+make gates-example  # Evaluate gates on the seed example (G2 should be READY)
+make bootstrap-test # Sandbox smoke-test that the template still bootstraps cleanly
 ```
+
+## Artifact Format — Frontmatter Contract (mandatory)
+
+Every artifact you create lives in **its own file** with YAML frontmatter on top.
+The frontmatter is what makes the pipeline automatic: validators, the gate-readiness
+engine and the traceability builder all read these fields.
+
+- **Schema:** see `.pi/rules/artifact-frontmatter.md` for the per-type required keys,
+  closed vocabulary and ID patterns.
+- **Filename = `<id>.md`** (e.g. `REQ-SW-AC-001.md`, `FMEA-001.md`, `TC-INT-005.md`).
+- **One artifact per file.** Compiled views like a full SRS document are *generated*
+  from the per-file artifacts; do not edit them directly.
+- **Format reference:** `examples/coag-analyzer/` is a small, complete, validated
+  worked example — read it once before creating your first artifact in a new project.
+- **Per-type starter templates:** `project/10_Documentation/templates/REQ.md`,
+  `STK.md`, `SysREQ.md` (plus the existing FMEA/TC/SDD/SRS cover-doc templates).
+- **Before you commit:** run `make validate`. If it returns errors, fix them.
 
 ## What You (the User) Want Me (the Agent) To Do
 
@@ -135,7 +151,9 @@ You want me to:
   - `.pi/skills/req-to-risk-derivation.md` — deriving FMEA from requirements
 - **Write code to `src/<component>/`**, project artifacts to `project/` — never to temporary locations
 - **Write unit tests alongside code** in `src/<component>/tests/` — integration/system/architecture tests go to `project/06_Verification/`
-- **Update `dashboard/data/status.json`** after each significant action
+- **Every artifact carries frontmatter** per `.pi/rules/artifact-frontmatter.md`. One artifact per file, filename = `<id>.md`.
+- **Run `make validate` before declaring work done.** Validator failures are bugs in your artifact, not the system.
+- **Update `dashboard/data/status.json`** after each significant action (use `make gates` to refresh the gate flags deterministically)
 - **Follow the V-Model phase sequence**: don't jump to implementation before requirements are baselined
 
 ## Current Project State

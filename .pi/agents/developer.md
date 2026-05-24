@@ -55,10 +55,6 @@ See `.pi/rules/coding-standards.md` for the complete 14-section specification in
 
 ## Key Directories
 - `src/` — All source code, organized by standalone component:
-  - `src/MainTool/` — Main instrument tool application
-  - `src/DataAnalyser/` — Standalone data analysis application
-  - `src/ConfigEditor/` — Standalone configuration editor
-  - `src/Firmware/` — Embedded firmware / middleware / control
 - `src/<component>/tests/` — Unit tests for each component
 - `project/06_Verification/02_IntegrationTests/` — Integration test results/reports (written by tester)
 

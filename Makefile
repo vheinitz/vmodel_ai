@@ -6,7 +6,8 @@
 PROJECT_ROOT := $(shell pwd)
 SCRIPTS := $(PROJECT_ROOT)/.pi/scripts
 
-.PHONY: help init status dashboard agents checklists traceability clean
+.PHONY: help init status dashboard agents checklists traceability clean \
+        validate validate-example gates gates-example bootstrap-test
 
 help:  ## Show this help
 	@echo "V-Model XT Project Commands"
@@ -40,6 +41,25 @@ checklists:  ## Run checklists for current phase
 
 traceability:  ## Generate traceability matrix
 	@bash $(SCRIPTS)/generate-traceability.sh
+
+validate:  ## Validate artifact frontmatter in project/ (write JSON to dashboard)
+	@python3 $(SCRIPTS)/validate-artifacts.py project \
+		--emit-json dashboard/data/validation.json
+
+validate-example:  ## Validate artifact frontmatter in the seed example
+	@python3 $(SCRIPTS)/validate-artifacts.py examples/coag-analyzer/project
+
+gates:  ## Evaluate decision-gate readiness for project/ (patches status.json)
+	@python3 $(SCRIPTS)/check-gates.py project \
+		--emit-json dashboard/data/gates.json \
+		--patch-status dashboard/data/status.json \
+		--ok-if-empty
+
+gates-example:  ## Evaluate decision-gate readiness for the seed example
+	@python3 $(SCRIPTS)/check-gates.py examples/coag-analyzer/project
+
+bootstrap-test:  ## Smoke-test: clone template into a temp dir and run validate+gates
+	@bash $(SCRIPTS)/bootstrap-test.sh
 
 reports:  ## Render project artifacts to HTML for dashboard
 	@bash $(SCRIPTS)/generate-reports.sh
