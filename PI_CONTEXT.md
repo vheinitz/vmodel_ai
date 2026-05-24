@@ -29,12 +29,12 @@ This is a **V-Model XT development project** for a **medical laboratory automati
 ├── project/               ← All V-Model project management & documentation
 │   ├── 00_ProjectManagement/  ← PMP, QA Plan, CM Plan, Project Manual
 │   ├── 01_Requirements/       ← Stakeholder → System → Software → HW reqs
-│   │   ├── 00_UserNeeds_Lastenheft/  ← WHAT users need (Lastenheft)
+│   │   ├── 00_UserNeeds/             ← WHAT users need
 │   │   ├── 00_RiskInputs/            ← Links to 08_RiskManagement (hazard analysis)
 │   │   ├── 02_SystemReqs/            ← Binding system reqs (Pflichtenheft) incl. safety
 │   │   ├── 03_SoftwareReqs/          ← Software-specific requirements
 │   │   ├── 04_HardwareReqs/          ← Hardware-specific requirements
-│   │   └── README.md                 ← Lastenheft → Risk → Pflichtenheft flow
+│   │   └── README.md                 ← User Needs → Risk → System Requirements flow
 │   ├── 02_Architecture/       ← System Arch → SW Arch → HW Arch
 │   ├── 03_Design/             ← System Design → SW Design → HW Design
 │   ├── 04_Implementation/     ← Implementation-related project docs (build env, coding standards)

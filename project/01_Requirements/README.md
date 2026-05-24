@@ -6,8 +6,8 @@ The V-Model requires this sequence. Do NOT skip or reorder:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1. USER NEEDS (Lastenheft)                                  │
-│    00_UserNeeds_Lastenheft/                                 │
+│ 1. USER NEEDS                                               │
+│    00_UserNeeds/                                            │
 │    WHAT the users and stakeholders need                     │
 │    Written in user language, not technical specs            │
 │    Source: stakeholder interviews, existing product docs    │
@@ -24,7 +24,7 @@ The V-Model requires this sequence. Do NOT skip or reorder:
                              │
                              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. SYSTEM REQUIREMENTS (Pflichtenheft)                      │
+│ 3. SYSTEM REQUIREMENTS                                      │
 │    02_SystemReqs/                                           │
 │    WHAT the system must do to fulfill user needs            │
 │    INCLUDES safety requirements derived from risk analysis  │
@@ -49,18 +49,18 @@ The V-Model requires this sequence. Do NOT skip or reorder:
 
 ## Directory Purpose
 
-| Directory | German Name | Content | Input From | Output To |
-|-----------|------------|---------|------------|-----------|
-| `00_UserNeeds_Lastenheft/` | Lastenheft | Stakeholder wishes, user stories, intended use | Stakeholders, existing products | Risk Analysis, System Reqs |
-| `00_RiskInputs/` | Risikoanalyse-Vorgaben | Link to risk analysis — hazard identification from user needs | 00_UserNeeds, 08_RiskManagement | 02_SystemReqs |
-| `02_SystemReqs/` | Pflichtenheft | Binding system requirements including safety reqs | User Needs + Risk Analysis | SW Reqs, HW Reqs, Architecture |
-| `03_SoftwareReqs/` | Software-Anforderungen | Software-specific requirements | System Reqs | SW Architecture |
-| `04_HardwareReqs/` | Hardware-Anforderungen | Hardware-specific requirements | System Reqs | HW Architecture |
+| Directory | Content | Input From | Output To |
+|-----------|---------|------------|-----------|
+| `00_UserNeeds/` | Stakeholder wishes, user stories, intended use | Stakeholders, existing products | Risk Analysis, System Reqs |
+| `00_RiskInputs/` | Link to risk analysis — hazard identification from user needs | 00_UserNeeds, 08_RiskManagement | 02_SystemReqs |
+| `02_SystemReqs/` | Binding system requirements including safety reqs | User Needs + Risk Analysis | SW Reqs, HW Reqs, Architecture |
+| `03_SoftwareReqs/` | Software-specific requirements | System Reqs | SW Architecture |
+| `04_HardwareReqs/` | Hardware-specific requirements | System Reqs | HW Architecture |
 
 ## Key Rule
 
-**System Requirements (Pflichtenheft) MUST NOT be baselined before:**
-1. User Needs (Lastenheft) are documented ✅
+**System Requirements MUST NOT be baselined before:**
+1. User Needs are documented ✅
 2. Risk Analysis (hazard identification) is complete ✅
 3. Risk controls have been formulated as safety requirements ✅
 

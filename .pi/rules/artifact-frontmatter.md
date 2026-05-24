@@ -40,7 +40,7 @@ Rules that always apply:
 
 The `type` field selects the schema. Required keys per type below; **omit any required key and the validator fails the artifact.**
 
-### 2.1 `stakeholder-need` — User need (Lastenheft)
+### 2.1 `stakeholder-need` — User need
 
 Location: `project/01_Requirements/01_StakeholderReqs/`
 Filename: `STK-<NNN>.md`

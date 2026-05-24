@@ -7,7 +7,7 @@ Each phase has defined entry and exit criteria:
 
 | Phase | Entry Criteria | Exit Criteria |
 |-------|---------------|---------------|
-| **User Needs (Lastenheft)** | Project approved (G1) | User needs documented, reviewed. Written in stakeholder language. |
+| **User Needs** | Project approved (G1) | User needs documented, reviewed. Written in stakeholder language. |
 | **Risk Analysis** | User needs documented | Hazards identified, risk controls defined → feed into System Reqs |
 | **System Reqs (Pflichtenheft)** | User needs + Risk Analysis complete | System reqs baselined, includes safety reqs from risk controls, traced to user needs (G2). Same quality standards: measurable, attributed, approved. |
 | **System Architecture** | System reqs baselined | Architecture defined, reviewed (G3) |

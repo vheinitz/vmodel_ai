@@ -7,7 +7,7 @@ Risk management FEEDS INTO requirements and architecture. It is not an isolated 
 ## Process Flow
 
 ```
-User Needs (project/01_Requirements/00_UserNeeds_Lastenheft/)
+User Needs (project/01_Requirements/00_UserNeeds/)
         │
         ▼
 ┌──────────────────────────────────────────────────┐
@@ -54,8 +54,8 @@ System Requirements (project/01_Requirements/02_SystemReqs/)
 
 **Hazard analysis in `01_RiskAnalysis/` MUST be completed and reviewed BEFORE `project/01_Requirements/02_SystemReqs/` is baselined.**
 
-Rationale: Risk controls identified in hazard analysis become safety requirements. These safety requirements are legally binding (Pflichtenheft). Adding them after baselining constitutes a change request with full impact analysis.
+Rationale: Risk controls identified in hazard analysis become safety requirements. These safety requirements are legally binding. Adding them after baselining constitutes a change request with full impact analysis.
 
 ## Cross-Reference
 
-See `project/01_Requirements/README.md` for the complete Lastenheft → Risk → Pflichtenheft flow.
+See `project/01_Requirements/README.md` for the complete User Needs → Risk → System Requirements flow.
