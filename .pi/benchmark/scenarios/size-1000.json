@@ -1,0 +1,6 @@
+{
+  "name": "size-1000",
+  "description": "Stress scenario — 1000 user needs. Tests agent throughput, not realistic in human-driven flow.",
+  "count": 1000,
+  "seed": "size-1000"
+}

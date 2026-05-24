@@ -104,7 +104,31 @@ make gates          # Evaluate decision-gate readiness (patches status.json + wr
 make validate-example # Validate the seed example (examples/coag-analyzer/)
 make gates-example  # Evaluate gates on the seed example (G2 should be READY)
 make bootstrap-test # Sandbox smoke-test that the template still bootstraps cleanly
+
+# Benchmark harness (creates a throwaway branch with fictive input, runs pi, measures)
+make benchmark-list                        # show available scenarios
+make benchmark SCENARIO=size-50            # one run on a disposable branch
+make benchmark-compare SCENARIO=size-50    # aggregate stats across runs
 ```
+
+## Benchmark harness
+
+`.pi/benchmark/` contains a synthetic-input harness that measures how
+completely and consistently you (the agent) drive the V-Model pipeline:
+
+- Scenario JSONs in `.pi/benchmark/scenarios/` define input sizes
+  (10, 20, 50, 100, 1000 user needs).
+- `gen-userneeds.py` produces deterministic STK-* artifacts from `(count, seed)`.
+- `run-benchmark.sh` creates a throwaway `benchmark/<scenario>-run-...` branch,
+  generates input, invokes `pi` with the prompt at
+  `.pi/benchmark/prompts/v-model-pipeline.md`, measures, then returns to master.
+- Results land at `~/.cache/vmodel-benchmark/<repo>/<scenario>/run-*.json`
+  (outside the repo on purpose, so they outlive the test branch).
+- `compare-runs.py` aggregates multiple runs into mean ± stddev, gate pass
+  rate, and Jaccard similarity of produced artifact-ID sets.
+
+Run only when explicitly asked. Benchmark scripts refuse to operate on
+anything other than a clean `master` to keep the template uncontaminated.
 
 ## Artifact Format — Frontmatter Contract (mandatory)
 

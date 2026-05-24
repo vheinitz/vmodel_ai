@@ -11,7 +11,8 @@ SCRIPTS := $(PROJECT_ROOT)/.pi/scripts
 PORT ?= 8080
 
 .PHONY: help init status dashboard agents checklists traceability clean \
-        validate validate-example gates gates-example bootstrap-test
+        validate validate-example gates gates-example bootstrap-test \
+        benchmark benchmark-compare benchmark-list
 
 help:  ## Show this help
 	@echo "V-Model XT Project Commands"
@@ -64,6 +65,26 @@ gates-example:  ## Evaluate decision-gate readiness for the seed example
 
 bootstrap-test:  ## Smoke-test: clone template into a temp dir and run validate+gates
 	@bash $(SCRIPTS)/bootstrap-test.sh
+
+benchmark:  ## Run one benchmark (usage: make benchmark SCENARIO=size-50 [RUN_ID=1])
+	@if [ -z "$(SCENARIO)" ]; then \
+		echo "Usage: make benchmark SCENARIO=<name>  (see make benchmark-list)"; exit 2; \
+	fi
+	@SCENARIO=$(SCENARIO) RUN_ID=$(RUN_ID) PI_CMD="$(PI_CMD)" DRY_RUN=$(DRY_RUN) \
+		bash $(PROJECT_ROOT)/.pi/benchmark/scripts/run-benchmark.sh
+
+benchmark-compare:  ## Aggregate stats across runs (usage: make benchmark-compare SCENARIO=size-50)
+	@if [ -z "$(SCENARIO)" ]; then \
+		echo "Usage: make benchmark-compare SCENARIO=<name>"; exit 2; \
+	fi
+	@python3 $(PROJECT_ROOT)/.pi/benchmark/scripts/compare-runs.py --scenario $(SCENARIO)
+
+benchmark-list:  ## List available benchmark scenarios
+	@for f in $(PROJECT_ROOT)/.pi/benchmark/scenarios/*.json; do \
+		name=$$(basename $$f .json); \
+		desc=$$(python3 -c "import json; d=json.load(open('$$f')); print(f\"count={d['count']:<6} {d.get('description','')}\")"); \
+		printf "  %-12s %s\n" "$$name" "$$desc"; \
+	done
 
 reports:  ## Render project artifacts to HTML for dashboard
 	@bash $(SCRIPTS)/generate-reports.sh
