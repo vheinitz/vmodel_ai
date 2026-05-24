@@ -6,6 +6,10 @@
 PROJECT_ROOT := $(shell pwd)
 SCRIPTS := $(PROJECT_ROOT)/.pi/scripts
 
+# Dashboard port. Override on the command line if 8080 is in use, e.g.:
+#   make serve PORT=8081
+PORT ?= 8080
+
 .PHONY: help init status dashboard agents checklists traceability clean \
         validate validate-example gates gates-example bootstrap-test
 
@@ -75,14 +79,14 @@ all: dashboard agents checklists traceability reports  ## Run full analysis cycl
 	@echo ""
 	@echo "Run 'make serve' and open http://localhost:8080/dashboard/ to view results."
 
-serve:  ## Start bidirectional dashboard server (http://localhost:8080)
-	@python3 $(SCRIPTS)/dashboard-server.py
+serve:  ## Start bidirectional dashboard server (override port: make serve PORT=8081)
+	@python3 $(SCRIPTS)/dashboard-server.py --port $(PORT)
 
-serve-static:  ## Start static HTTP server (no pi-launch API)
-	@echo "Starting static HTTP server at http://localhost:8080"
-	@echo "Open http://localhost:8080/dashboard/ in your browser"
+serve-static:  ## Start static HTTP server (override port: make serve-static PORT=8081)
+	@echo "Starting static HTTP server at http://localhost:$(PORT)"
+	@echo "Open http://localhost:$(PORT)/dashboard/ in your browser"
 	@echo "Press Ctrl+C to stop"
-	@python3 -m http.server 8080
+	@python3 -m http.server $(PORT)
 
 prompt:  ## Launch pi with a prompt (usage: make prompt TEXT="your prompt")
 	@if [ -z "$(TEXT)" ]; then \
