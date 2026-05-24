@@ -29,13 +29,22 @@ You observe the **software design layer above** and produce the implementation l
 - **Maintain start.sh** — it must succeed from a clean checkout without manual steps
 
 ## Coding Standards (Medical Device Software)
-- **Language**: C++ (GUI/Control), C (Firmware) — or project-specific
-- **Naming**: CamelCase classes, snake_case functions, UPPER_CASE constants
-- **Error Handling**: Appropriate for context (exceptions / return codes)
-- **Logging**: Structured logging with severity levels (DEBUG/INFO/WARN/ERROR/FATAL)
-- **Memory**: RAII, smart pointers, no raw new/delete in application code
-- **Thread Safety**: Appropriate synchronization primitives
-- **Documentation**: Doxygen/Javadoc comments on all public interfaces
+
+**MANDATORY READING before any implementation**: `.pi/rules/coding-standards.md`
+
+This rule defines all coding standards derived from software architecture:
+- **Modularity**: One class per file, directory mirrors architecture layers, modules are independently replaceable
+- **Interfaces**: Clear contracts, `Result<T>` error handling, dependency injection, no circular deps
+- **Naming**: PascalCase classes, snake_case functions, UPPER_CASE constants (full spec in rule)
+- **Function design**: ≤50 lines, ≤5 parameters, bounded loops, no recursion (Class B/C)
+- **Memory**: RAII, `unique_ptr` for ownership, raw pointer for observation, no raw `new`/`delete`
+- **Error handling**: Error codes/`Result<T>` for Class B/C; exceptions only in Class A
+- **Logging**: Structured (DEBUG/INFO/WARN/ERROR/FATAL) — never log PHI/passwords
+- **Thread safety**: Document thread model, prefer message-passing, no recursive mutexes
+- **Documentation**: Doxygen on all public interfaces, `@pre`/`@post`/`@warning` required
+- **Safety-critical** (Class B/C): Validate all inputs, zero compiler warnings, no commented-out code
+
+See `.pi/rules/coding-standards.md` for the complete 14-section specification including code review checklist.
 
 ## Unit Test Requirements
 - **Coverage**: ≥ 80% line coverage, 100% for safety-critical modules

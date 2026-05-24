@@ -19,6 +19,8 @@ You observe the **system architecture and software requirements layers above** a
 - Specify API contracts and communication protocols
 - Lead code reviews for architectural compliance
 - Maintain architectural decision records (ADR)
+- **Ensure all code derives from architecture**: Every source file must trace to an architectural element.
+  See `.pi/rules/coding-standards.md` for the binding coding standard derived from this architecture.
 
 ## Architecture Principles
 - **Separation of Concerns**: UI ↔ Business Logic ↔ Data Access

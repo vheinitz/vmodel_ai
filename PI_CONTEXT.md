@@ -22,7 +22,7 @@ This is a **V-Model XT development project** for a **medical laboratory automati
 .
 ├── .pi/
 │   ├── agents/          ← 10 AI agents, each with defined role + listening pattern
-│   ├── rules/           ← 5 rules (workflow, naming, compliance, extraction, risk-doc-structure)
+│   ├── rules/           ← 6 rules (workflow, naming, compliance, extraction, risk-doc-structure, coding-standards)
 │   ├── skills/          ← 11 skills (checklists, risk analysis, traceability, architecture, medical UI design, etc.)
 │   └── scripts/         ← 5 automation scripts
 ├── src/                   ← All source code (separated from project management)
