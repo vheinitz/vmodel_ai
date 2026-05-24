@@ -12,8 +12,10 @@ You are **not continuously active** like other agents. You are triggered:
 
 ## Listening Pattern
 - **Observes**: Current project state, technology stack, architecture decisions, design choices
-- **Researches**: Latest developments in medical software, hardware, AI/ML, automation
-- **Analyzes**: Competitor products, patent filings, scientific publications
+- **Observes**: UI/UX design system, accessibility status, multilanguage coverage
+- **Researches**: Latest developments in medical software, hardware, AI/ML, automation, UI/UX
+- **Analyzes**: Competitor products, patent filings, scientific publications, competitor UIs
+- **Uses skill**: `.pi/skills/medical-ui-design.md` — MANDATORY for UI technology evaluation
 - **Produces**: Innovation recommendations in `project/10_Documentation/InnovationLog.md`
 
 ## Sources of Innovation Intelligence
@@ -23,12 +25,25 @@ You are **not continuously active** like other agents. You are triggered:
 - `project/02_Architecture/` — current architectural decisions
 - `project/03_Design/` — current design choices
 - `dashboard/data/project.json` — project metadata
+- `.pi/skills/medical-ui-design.md` — UI design competence (consult for all UI evaluations)
 
 ### External (from literature — available during agent session)
 - Input from `Literature/Forschung und Entwicklung/` — research papers
 - Input from `Literature/Competitors/` — competitor analysis
 - Input from `Literature/Innovationsmanagement/` — innovation frameworks
 - Knowledge of current industry trends (the agent's training data)
+
+### Medical UI Design Resources (Top 10 — consult these for UI technology decisions)
+1. [FDA Human Factors](https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/human-factors-and-medical-devices) (★10/10 — regulatory authority)
+2. [Emergo by UL: Timeless Medical Device UI](https://www.emergobyul.com/news/tips-designing-timeless-medical-device-user-interfaces-ui) (★9/10)
+3. [Emergo by UL: GUI Design for Medical Devices](https://www.emergobyul.com/resources/graphical-user-interface-design-medical-devices) (★9/10)
+4. [usability.de: UX Design for Medical Devices](https://www.usability.de/en/services/usability-in-medical-engineering/ux-design-for-medical-devices.html) (★8/10)
+5. [Melrose: Definitive Guide to Medical Device UI](https://melrose-nl.com/blog/all-about-user-interfaces-for-medical-devices-a-definitive-guide) (★8/10)
+6. [Clarimed: UX/UI in Medical Device Safety](https://clarimed.com/resources/blog/the-role-of-ux-ui-in-medical-device-safety-and-adoption) (★8/10)
+7. [Veranex: Medical Device UX/UI Strategies](https://veranex.com/blog/medical-device-design-ux-ui-winning-strategies) (★7/10)
+8. [WILD Design: Digital Design for Medical](https://www.wilddesign.de/service/digital-design) (★7/10)
+9. [DeviceLab: UI/UX Engineering](https://www.devicelab.com/services_we_offer/ui-ux-engineering/) (★7/10)
+10. [Altia: Medical Device UI Trends](https://altia.com/2021/11/11/medical-device-user-interfaces-current-trends-and-future-improvements/) (★7/10)
 
 ---
 
@@ -78,6 +93,37 @@ Analyze competitor landscape (from Literature/Competitors/):
 - **Technology comparison**: What tech stack do competitors use?
 - **Market positioning**: Price points, segments, geographies
 
+### 6. Medical UI/UX Innovation ← CONSULT THIS FIRST
+
+> **MANDATORY**: Before evaluating any UI technology or design system, read `.pi/skills/medical-ui-design.md`. This skill contains:
+> - Top 10 curated medical UI/UX resources with authority scores
+> - Regulatory framework (IEC 62366, FDA Human Factors, ISO 9241, AAMI HE75)
+> - Framework-independent UI technology scoring matrix (Qt, Electron, Flutter, etc.)
+> - Accessibility standards (WCAG 2.1, EN 301 549, BITV 2.0)
+> - Multilanguage, color-blind safety, typography guidelines
+> - Lab-device-specific design patterns (sample loading, run monitoring, result review, QC dashboard)
+
+Review the **Medical UI Technology Landscape**:
+
+| Area | Check | Key Resources |
+|------|-------|--------------|
+| UI Framework | Qt 6 QML vs competitors | **Top Resources #1–#10 in skill** |
+| Accessibility | WCAG 2.2, EN 301 549 compliance | UNICEF Design System, Figma Principles |
+| Design System | Component library consistency | diconium Design Systems Guide |
+| Visual Design | Color palettes, typography, iconography | Behance Medical UI, Digital Synopsis examples |
+| Usability Testing | IEC 62366 formative/summative | usability.de methodology |
+| Embedded UI | LVGL, TouchGFX, Altia for firmware GUIs | Altia trends article |
+| Emerging UI | Voice control, AR assistance, AI-assisted workflows | Altia, FDA Digital Health |
+
+**UI Framework Re-evaluation Checklist** (quarterly):
+- [ ] Read `.pi/skills/medical-ui-design.md` scoring matrix
+- [ ] Check Top 10 resources for new guidance
+- [ ] Compare current framework against latest alternatives
+- [ ] Verify accessibility compliance with current standards
+- [ ] Review competitor UI designs (Behance, Digital Synopsis)
+- [ ] Assess new multilanguage requirements
+- [ ] Evaluate emerging UI paradigms for feasibility
+
 ### 5. Research & Development Trends
 From `Literature/Forschung und Entwicklung/`:
 
@@ -123,6 +169,13 @@ From `Literature/Forschung und Entwicklung/`:
 ## Current Technology Stack
 [Document what is currently used]
 
+## UI/UX Assessment (consult `.pi/skills/medical-ui-design.md`)
+- Current UI framework: [Qt 6 / Electron / Flutter / embedded LVGL / ...]
+- Accessibility compliance: [WCAG level, screen reader support, color contrast]
+- Multilanguage coverage: [languages, RTL support status]
+- Design system: [in use / needed / status]
+- Usability testing compliance: [IEC 62366 formative/summative status]
+
 ## Recommendations
 
 ### Critical (Do Now)
@@ -134,8 +187,12 @@ From `Literature/Forschung und Entwicklung/`:
 ### Strategic (Future)
 - [REC-003]: [Recommendation] — [Rationale] — [Impact]
 
+## UI/UX Recommendations
+- [UI-REC-001]: [UI framework upgrade / accessibility improvement / new design pattern]
+- [Rationale from Top 10 resources or skill]
+
 ## Competitor Analysis Summary
-[Brief analysis of competitive landscape]
+[Brief analysis of competitive landscape, including competitor UI review]
 
 ## Research Insights
 [Relevant findings from literature]

@@ -23,7 +23,7 @@ This is a **V-Model XT development project** for a **medical laboratory automati
 ├── .pi/
 │   ├── agents/          ← 10 AI agents, each with defined role + listening pattern
 │   ├── rules/           ← 5 rules (workflow, naming, compliance, extraction, risk-doc-structure)
-│   ├── skills/          ← 10 skills (checklists, risk analysis, traceability, architecture, etc.)
+│   ├── skills/          ← 11 skills (checklists, risk analysis, traceability, architecture, medical UI design, etc.)
 │   └── scripts/         ← 5 automation scripts
 ├── src/                   ← All source code (separated from project management)
 │   ├── MainTool/          ← Main instrument tool application
@@ -128,7 +128,11 @@ You want me to:
 
 - Use the **agent system**: for each task, I role-play the appropriate agent
 - **Read the agent's config** in `.pi/agents/<agent>.md` — it tells me exactly what to observe and produce
-- **Read relevant skills** in `.pi/skills/` for detailed methodology
+- **Read relevant skills** in `.pi/skills/` for detailed methodology:
+  - `.pi/skills/medical-ui-design.md` — MANDATORY for any UI/UX design, technology selection, or accessibility work
+  - `.pi/skills/architecture-patterns.md` — system/software architecture patterns
+  - `.pi/skills/requirements-quality-checklist.md` — pre-baseline requirements review
+  - `.pi/skills/req-to-risk-derivation.md` — deriving FMEA from requirements
 - **Write code to `src/<component>/`**, project artifacts to `project/` — never to temporary locations
 - **Write unit tests alongside code** in `src/<component>/tests/` — integration/system/architecture tests go to `project/06_Verification/`
 - **Update `dashboard/data/status.json`** after each significant action
