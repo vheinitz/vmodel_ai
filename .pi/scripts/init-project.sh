@@ -19,7 +19,6 @@ read -rp "Project Number (e.g., PRJ001): " PROJECT_NUMBER
 read -rp "Project Name (e.g., MyLabDevice): " PROJECT_NAME
 read -rp "Product Description: " PRODUCT_DESC
 read -rp "Regulatory Class (A/B/C per IEC 62304): " SAFETY_CLASS
-read -rp "Component codes (space-separated, e.g. 'GUI CTRL FW'): " COMPONENTS
 
 TIMESTAMP=$(date +%Y-%m-%d)
 INIT_DATE="${TIMESTAMP}"
@@ -46,7 +45,7 @@ cat > "${CONFIG_DIR}/project.json" << EOF
     "name": "${PROJECT_NAME}",
     "description": "${PRODUCT_DESC}",
     "safety_class": "${SAFETY_CLASS}",
-    "components": "${COMPONENTS:-GUI CTRL FW}",
+    "components": "${COMPONENTS:-}",
     "standards": ["IEC 62304:2006+AMD1:2015", "ISO 14971:2019", "ISO 13485:2016", "IVDR (EU) 2017/746"],
     "init_date": "${INIT_DATE}",
     "last_updated": "${INIT_DATE}"
@@ -121,7 +120,7 @@ cat > "${PROJECT_ROOT}/README.md" << EOF
 ${PRODUCT_DESC}
 
 ## Components
-${COMPONENTS:-GUI CTRL FW}
+(Defined during requirements phase)
 
 ## Project Status
 View the [Project Dashboard](dashboard/index.html) for current status.

@@ -9,6 +9,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+
+# Guard: refuse if project not initialized
+source "${SCRIPT_DIR}/guard-init.sh"
 STATUS_FILE="${PROJECT_ROOT}/dashboard/data/status.json"
 AGENTS_DIR="${PROJECT_ROOT}/.pi/agents"
 TIMESTAMP=$(date -Iseconds)

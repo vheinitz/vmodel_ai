@@ -8,8 +8,13 @@ try:
     with open(STATUS_FILE) as f:
         d = json.load(f)
 except (FileNotFoundError, json.JSONDecodeError):
-    print("No status data yet. Run 'make dashboard' first.")
+    print("No status data yet. Run 'make init' to initialize, then 'make dashboard' to scan.")
     sys.exit(1)
+
+# Guard: refuse if project not initialized
+if d.get('project', 'TEMPLATE') in ('Unconfigured Project', 'TEMPLATE') or d.get('number', 'TEMPLATE') == 'TEMPLATE':
+    print("Project is not initialized. Run 'make init' first.")
+    sys.exit(2)
 
 print(f"Project: {d['project']} ({d['number']})")
 print(f"Safety Class: {d['safety_class']}")

@@ -6,11 +6,13 @@
 PROJECT_ROOT := $(shell pwd)
 SCRIPTS := $(PROJECT_ROOT)/.pi/scripts
 
+
+
 # Dashboard port. Override on the command line if 8080 is in use, e.g.:
 #   make serve PORT=8081
 PORT ?= 8080
 
-.PHONY: help init status dashboard agents checklists traceability clean \
+.PHONY: help init _assert-init-noop status dashboard agents checklists traceability clean \
         validate validate-example gates gates-example bootstrap-test \
         benchmark benchmark-compare benchmark-list
 
@@ -23,38 +25,41 @@ help:  ## Show this help
 init:  ## Initialize a new project (interactive)
 	@bash $(SCRIPTS)/init-project.sh
 
-status:  ## Show current project status with artifact counts
+_assert-init-noop:  ## Internal: called by targets below, refuses if not initialized
+	@bash $(SCRIPTS)/guard-init.sh
+
+status: _assert-init-noop  ## Show current project status with artifact counts
 	@python3 $(SCRIPTS)/status.py
 
-dashboard:  ## Update dashboard data
+dashboard: _assert-init-noop  ## Update dashboard data
 	@bash $(SCRIPTS)/update-dashboard.sh
 	@echo "Dashboard data updated. Open dashboard/index.html to view."
 
-agents:  ## Trigger all AI agents for analysis
+agents: _assert-init-noop  ## Trigger all AI agents for analysis
 	@bash $(SCRIPTS)/trigger-agents.sh
 
-innovate:  ## Run innovation review (trigger innovation-manager)
+innovate: ## Run innovation review (trigger innovation-manager)
 	@echo "Innovation review triggered. Run with AI agent: innovation-manager"
 	@echo "Provide Literature/ input if available for competitor/research analysis."
 
-medical-review:  ## Run clinical/medical domain review
+medical-review: ## Run clinical/medical domain review
 	@echo "Medical domain review triggered. Run with AI agent: medical-domain-expert"
 	@echo "Provide IVDR/clinical literature input if available."
 
-checklists:  ## Run checklists for current phase
+checklists: _assert-init-noop  ## Run checklists for current phase
 	@bash $(SCRIPTS)/run-checklists.sh
 
-traceability:  ## Generate traceability matrix
+traceability: _assert-init-noop  ## Generate traceability matrix
 	@bash $(SCRIPTS)/generate-traceability.sh
 
-validate:  ## Validate artifact frontmatter in project/ (write JSON to dashboard)
+validate: _assert-init-noop  ## Validate artifact frontmatter in project/ (write JSON to dashboard)
 	@python3 $(SCRIPTS)/validate-artifacts.py project \
 		--emit-json dashboard/data/validation.json
 
 validate-example:  ## Validate artifact frontmatter in the seed example
 	@python3 $(SCRIPTS)/validate-artifacts.py examples/coag-analyzer/project
 
-gates:  ## Evaluate decision-gate readiness for project/ (patches status.json)
+gates: _assert-init-noop  ## Evaluate decision-gate readiness for project/ (patches status.json)
 	@python3 $(SCRIPTS)/check-gates.py project \
 		--emit-json dashboard/data/gates.json \
 		--patch-status dashboard/data/status.json \
@@ -86,15 +91,15 @@ benchmark-list:  ## List available benchmark scenarios
 		printf "  %-12s %s\n" "$$name" "$$desc"; \
 	done
 
-reports:  ## Render project artifacts to HTML for dashboard
+reports: _assert-init-noop  ## Render project artifacts to HTML for dashboard
 	@bash $(SCRIPTS)/generate-reports.sh
 
 render: reports  ## Alias: render artifacts to HTML
 
-render-pdf:  ## Render artifacts to HTML + PDF
+render-pdf: _assert-init-noop  ## Render artifacts to HTML + PDF
 	@bash $(SCRIPTS)/generate-reports.sh --pdf
 
-all: dashboard agents checklists traceability reports  ## Run full analysis cycle
+all: _assert-init-noop dashboard agents checklists traceability reports  ## Run full analysis cycle
 	@echo ""
 	@echo "Full analysis cycle complete."
 	@echo "1. Dashboard data updated"
@@ -105,10 +110,10 @@ all: dashboard agents checklists traceability reports  ## Run full analysis cycl
 	@echo ""
 	@echo "Run 'make serve' and open http://localhost:8080/dashboard/ to view results."
 
-serve:  ## Start bidirectional dashboard server (override port: make serve PORT=8081)
+serve: _assert-init-noop  ## Start bidirectional dashboard server (override port: make serve PORT=8081)
 	@python3 $(SCRIPTS)/dashboard-server.py --port $(PORT)
 
-serve-static:  ## Start static HTTP server (override port: make serve-static PORT=8081)
+serve-static: _assert-init-noop  ## Start static HTTP server (override port: make serve-static PORT=8081)
 	@echo "Starting static HTTP server at http://localhost:$(PORT)"
 	@echo "Open http://localhost:$(PORT)/dashboard/ in your browser"
 	@echo "Press Ctrl+C to stop"
