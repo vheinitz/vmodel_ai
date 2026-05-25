@@ -2,7 +2,7 @@
    Panel: Reports & Artifacts Viewer
    Loads artifact index from dashboard/data/reports/artifacts/index.json
    and displays rendered HTML artifacts grouped by category.
-   Also loads legacy reports from dashboard/data/reports/index.json.
+   Also loads legacy overview reports from dashboard/data/reports/index.json.
    ============================================================ */
 async function renderPanelReports() {
     const container = document.getElementById('panel-reports');
@@ -19,17 +19,22 @@ async function renderPanelReports() {
         if (resp.ok) artifactsData = await resp.json();
     } catch (e) { /* fall through */ }
 
-    // Also try legacy report index
+    // Also try legacy overview report index
     try {
         const resp = await fetch('data/reports/index.json?' + Date.now());
         if (resp.ok) legacyData = await resp.json();
     } catch (e) { /* fall through */ }
 
-    const categories = artifactsData?.categories || {};
     const allArtifacts = artifactsData?.artifacts || [];
-    const legacyReports = legacyData?.reports || [];
+    // Build categories from flat artifact list if not provided
+    let categories = artifactsData?.categories || {};
+    if (Object.keys(categories).length === 0 && allArtifacts.length > 0) {
+        categories = buildCategories(allArtifacts);
+    }
+    // Legacy reports: support both 'reports' and 'pages' keys
+    const legacyPages = legacyData?.reports || legacyData?.pages || [];
 
-    if (Object.keys(categories).length === 0 && legacyReports.length === 0) {
+    if (allArtifacts.length === 0 && legacyPages.length === 0) {
         container.innerHTML = `<div style="color:var(--text-dim);font-size:0.82em;padding:8px 0">
             No reports generated yet.<br>
             Run <code>make reports</code> to render project artifacts to HTML.
@@ -54,7 +59,7 @@ async function renderPanelReports() {
         'Validation',
         'Risk Analysis', 'FMEA', 'Safety Classification',
         'Risk Management (Overview)',
-        'Regulatory', 'Documentation', 'Templates',
+        'Regulatory', 'Documentation', 'Templates','Documentation Templates',
         'Other'
     ];
 
@@ -70,13 +75,13 @@ async function renderPanelReports() {
     // Tab bar: switch between "Artifacts" and "Overview Reports"
     html += '<div class="tabs">';
     html += '<div class="tab active" onclick="switchReportTab(this, \'artifacts\')">📄 Artifacts (' + allArtifacts.length + ')</div>';
-    if (legacyReports.length > 0) {
-        html += '<div class="tab" onclick="switchReportTab(this, \'legacy\')">📊 Overview (' + legacyReports.length + ')</div>';
+    if (legacyPages.length > 0) {
+        html += '<div class="tab" onclick="switchReportTab(this, \'legacy\')">📊 Overview (' + legacyPages.length + ')</div>';
     }
     html += '</div>';
 
     // Artifacts tab content
-    html += '<div id="report-tab-artifacts" class="report-tab-content" style="max-height:420px;overflow-y:auto">';
+    html += '<div id="report-tab-artifacts" class="report-tab-content" style="max-height:500px;overflow-y:auto">';
     if (Object.keys(categories).length > 0) {
         // Sort categories by order
         const sortedCategories = Object.keys(categories).sort((a, b) => {
@@ -99,9 +104,9 @@ async function renderPanelReports() {
                 const statusCls = item.status === 'baselined' || item.status === 'approved' ? 'color:var(--success)' : 'color:var(--text-dim)';
                 const statusDot = item.status ? `<span style="${statusCls};font-size:0.85em">● </span>` : '';
                 html += `<div class="report-item" style="padding:3px 12px">
-                    <span style="font-size:0.8em">${statusDot}<span title="${item.source || ''}">${item.title || item.id}</span></span>
+                    <span style="font-size:0.8em">${statusDot}<span title="${item.source || ''}">${item.title || item.id || item.file}</span></span>
                     <span style="display:flex;gap:4px;align-items:center">
-                        <button class="btn btn-primary btn-sm" onclick="viewArtifact('${item.file}', '${(item.title||'').replace(/'/g, "\\'")}')">View</button>
+                        <button class="btn btn-primary btn-sm" onclick="viewArtifact('${item.file}', '${(item.title||item.file||'').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">View</button>
                         <a href="data/reports/artifacts/${item.file}" target="_blank" class="btn btn-sm" style="background:var(--surface2);color:var(--text);text-decoration:none;border:1px solid var(--border);padding:4px 8px;font-size:0.75em">↗</a>
                     </span>
                 </div>`;
@@ -114,15 +119,17 @@ async function renderPanelReports() {
     html += '</div>';
 
     // Legacy tab content (hidden by default)
-    html += '<div id="report-tab-legacy" class="report-tab-content" style="display:none;max-height:420px;overflow-y:auto">';
-    for (const r of legacyReports) {
+    html += '<div id="report-tab-legacy" class="report-tab-content" style="display:none;max-height:500px;overflow-y:auto">';
+    for (const r of legacyPages) {
+        const title = typeof r === 'string' ? r : (r.title || r.file || '');
+        const file = typeof r === 'string' ? r : (r.file || '');
         const sizeKB = r.size ? (r.size / 1024).toFixed(1) + ' KB' : '';
         html += `<div class="report-item">
-            <span>📄 ${r.title}</span>
+            <span>📄 ${title.replace(/\.html$/,'').replace(/-/g,' ').replace(/_/g,' ')}</span>
             <span style="display:flex;gap:6px;align-items:center">
                 <span style="font-size:0.75em;color:var(--text-dim)">${sizeKB}</span>
-                <button class="btn btn-primary btn-sm" onclick="viewReport('${r.file}')">View</button>
-                <a href="data/reports/${r.file}" target="_blank" class="btn btn-sm" style="background:var(--surface2);color:var(--text);text-decoration:none;border:1px solid var(--border)">↗</a>
+                <button class="btn btn-primary btn-sm" onclick="viewReport('${file}')">View</button>
+                <a href="data/reports/${file}" target="_blank" class="btn btn-sm" style="background:var(--surface2);color:var(--text);text-decoration:none;border:1px solid var(--border)">↗</a>
             </span>
         </div>`;
     }
@@ -140,12 +147,63 @@ async function renderPanelReports() {
     container.innerHTML = html;
 }
 
+// Build categories from flat artifact list by parsing filenames
+function buildCategories(artifacts) {
+    const cats = {};
+    const catNames = {
+        '00_UserNeeds': 'User Needs',
+        '01_StakeholderReqs': 'Stakeholder Requirements',
+        '02_SystemReqs': 'System Requirements',
+        '03_SoftwareReqs': 'Software Requirements',
+        '04_HardwareReqs': 'Hardware Requirements',
+        '01_SystemArchitecture': 'System Architecture',
+        '02_SoftwareArchitecture': 'Software Architecture',
+        '03_HardwareArchitecture': 'Hardware Architecture',
+        'decisions': 'Architecture Decisions',
+        '01_SystemDesign': 'System Design',
+        '02_SoftwareDesign': 'Software Design',
+        '01_UnitTests': 'Unit Tests',
+        '02_IntegrationTests': 'Integration Tests',
+        '03_SystemTests': 'System Tests',
+        '04_ArchitectureTests': 'Architecture Tests',
+        '01_RiskAnalysis': 'Risk Analysis',
+        '02_FMEA': 'FMEA',
+        '03_SafetyClassification': 'Safety Classification',
+        'templates': 'Documentation Templates',
+        '01_IEC62304': 'Regulatory',
+        'README': 'Overview',
+        'overview': 'Overview',
+    };
+
+    for (const art of artifacts) {
+        const file = art.file || '';
+        // Parse category from filename like "01_Requirements_00_UserNeeds_STK-001.html"
+        const parts = file.replace(/\.html$/,'').split('_');
+        let cat = 'Other';
+        // Try to match known patterns
+        for (let i = 0; i < parts.length; i++) {
+            const candidate = parts.slice(i).join('_');
+            if (catNames[candidate]) {
+                cat = catNames[candidate];
+                break;
+            }
+        }
+        // If still "Other", try partial matches
+        if (cat === 'Other') {
+            for (const [key, name] of Object.entries(catNames)) {
+                if (file.includes(key)) { cat = name; break; }
+            }
+        }
+        if (!cats[cat]) cats[cat] = [];
+        cats[cat].push(art);
+    }
+    return cats;
+}
+
 function switchReportTab(el, tab) {
-    // Update tab styles
     const tabs = el.parentElement.querySelectorAll('.tab');
     tabs.forEach(t => t.classList.remove('active'));
     el.classList.add('active');
-    // Toggle content
     document.querySelectorAll('.report-tab-content').forEach(c => c.style.display = 'none');
     const target = document.getElementById('report-tab-' + tab);
     if (target) target.style.display = 'block';
@@ -171,7 +229,6 @@ function viewReport(filename) {
         viewer.style.display = 'block';
         iframe.src = 'data/reports/' + filename;
         title.textContent = filename.replace('.html','').replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase());
-        // Scroll to viewer
         viewer.scrollIntoView({ behavior: 'smooth' });
     }
 }
