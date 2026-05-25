@@ -31,9 +31,14 @@ TEST_IDS=$(grep -rh 'TC-[A-Z]*-[0-9]*' "${PROJECT_ROOT}/project/06_Verification/
 echo "Scanning for risk items..."
 RISK_IDS=$(grep -rh 'FMEA-[0-9]*' "${PROJECT_ROOT}/project/08_RiskManagement/" 2>/dev/null | grep -oP 'FMEA-\d+' | sort -u || true)
 
-REQ_COUNT=$(echo "${REQ_IDS}" | grep -c . || echo "0")
-TEST_COUNT=$(echo "${TEST_IDS}" | grep -c . || echo "0")
-RISK_COUNT=$(echo "${RISK_IDS}" | grep -c . || echo "0")
+# Robust count: handle empty input without producing multi-line output
+if [ -z "${REQ_IDS}" ]; then REQ_COUNT=0; else REQ_COUNT=$(echo "${REQ_IDS}" | wc -l); fi
+if [ -z "${TEST_IDS}" ]; then TEST_COUNT=0; else TEST_COUNT=$(echo "${TEST_IDS}" | wc -l); fi
+if [ -z "${RISK_IDS}" ]; then RISK_COUNT=0; else RISK_COUNT=$(echo "${RISK_IDS}" | wc -l); fi
+# Trim whitespace from wc -l output
+REQ_COUNT=$(echo "${REQ_COUNT}" | tr -d ' ')
+TEST_COUNT=$(echo "${TEST_COUNT}" | tr -d ' ')
+RISK_COUNT=$(echo "${RISK_COUNT}" | tr -d ' ')
 
 echo "  Found ${REQ_COUNT} requirement IDs"
 echo "  Found ${TEST_COUNT} test case IDs"

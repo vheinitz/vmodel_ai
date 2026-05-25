@@ -86,11 +86,34 @@ body {
 .header h1 { font-size: 1.3em; font-weight: 600; color: #fff; }
 .header .project-info { font-size: 0.82em; color: var(--text-dim); }
 
-/* Layout */
+/* Layout — single-column with tab navigation */
 .main-layout { display: grid; grid-template-columns: 1fr 340px; gap: 16px; padding: 16px 20px; max-width: 1800px; margin: 0 auto; }
 .main-left { min-width: 0; }
 .main-right { min-width: 0; }
 @media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } }
+
+/* Tab Navigation Bar */
+.tab-nav {
+    display: flex; gap: 2px; padding: 0 20px; max-width: 1800px; margin: 0 auto;
+    background: var(--surface); border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+    padding: 10px 20px; border: none; background: transparent; color: var(--text-dim);
+    cursor: pointer; font-size: 0.88em; font-family: inherit; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; transition: all 0.2s;
+}
+.tab-btn:hover { color: #fff; background: var(--surface2); }
+.tab-btn.active { color: #fff; border-bottom-color: var(--accent); font-weight: 600; }
+
+/* Tab Content Area */
+.tab-panel { display: none; padding: 16px 20px; max-width: 1800px; margin: 0 auto; }
+.tab-panel.active { display: block; }
+
+/* Two-column layout within Overview tab */
+.tab-columns { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+.tab-col-wide { min-width: 0; }
+.tab-col-narrow { min-width: 0; }
+@media (max-width: 1100px) { .tab-columns { grid-template-columns: 1fr; } }
 
 /* Panel loading indicator */
 .panel-loading { color: var(--text-dim); font-style: italic; padding: 8px; }
@@ -134,3 +157,21 @@ body {
 .snackbar.error { background: var(--danger); }
 .snackbar.info { background: var(--accent); }
 @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Floating Prompt Panel */
+.prompt-float {
+    position: fixed; bottom: 0; right: 16px; width: 420px; max-width: 95vw;
+    background: var(--surface); border: 1px solid var(--border);
+    border-bottom: none; border-radius: 8px 8px 0 0;
+    z-index: 200; box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    transition: all 0.2s;
+}
+.prompt-float-header {
+    padding: 10px 16px; cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; color: #fff; font-size: 0.88em; font-weight: 600;
+    background: var(--surface2); border-radius: 8px 8px 0 0; user-select: none;
+}
+.prompt-float-header:hover { background: #243040; }
+.prompt-float-body { padding: 12px 16px; max-height: 350px; overflow-y: auto; }
+.prompt-float-body.collapsed { display: none; }
+@media (max-width: 600px) { .prompt-float { right: 4px; width: calc(100vw - 8px); } }
