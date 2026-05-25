@@ -32,14 +32,7 @@ const DashboardPanels = {
                     this.setHeader(data, ' (file)');
                 }
             } catch (e2) {
-                // Try embedded
-                try {
-                    const el = document.getElementById('embedded-status-data');
-                    if (el && el.textContent.trim()) {
-                        data.status = JSON.parse(el.textContent);
-                        this.setHeader(data, ' (embedded)');
-                    }
-                } catch (e3) {}
+               
             }
 
             // Load project.json
