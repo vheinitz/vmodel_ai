@@ -108,35 +108,6 @@ cat > "${CONFIG_DIR}/status.json" << EOF
 }
 EOF
 
-# --- Create initial project README ---
-cat > "${PROJECT_ROOT}/README.md" << EOF
-# ${PROJECT_NAME} — Medical Laboratory Automation Device
-
-**Project Number:** ${PROJECT_NUMBER}  
-**Safety Class:** ${SAFETY_CLASS} (IEC 62304)  
-**Initialized:** ${INIT_DATE}  
-
-## Description
-${PRODUCT_DESC}
-
-## Components
-(Defined during requirements phase)
-
-## Project Status
-View the [Project Dashboard](dashboard/index.html) for current status.
-
-## Quick Links
-- [Source Code](src/)
-- [Project Management](project/00_ProjectManagement/)
-- [Requirements](project/01_Requirements/)
-- [Architecture](project/02_Architecture/)
-- [Design](project/03_Design/)
-- [Test & Verification](project/06_Verification/)
-- [Risk Management](project/08_RiskManagement/)
-- [Regulatory](project/09_Regulatory/)
-- [Documentation](project/10_Documentation/)
-EOF
-
 echo ""
 echo "✅ Project '${PROJECT_NAME}' (${PROJECT_NUMBER}) initialized successfully!"
 echo "   Safety Class: ${SAFETY_CLASS}"
@@ -144,7 +115,8 @@ echo "   Location:     ${PROJECT_ROOT}"
 echo ""
 echo "Next steps:"
 echo "   1. git init && git add -A && git commit -m 'Initial project'"
-echo "   2. Place existing documents/code in project directories"
-echo "   3. Run 'make all' to get AI agent analysis and suggestions"
+echo "   2. Start with user needs: describe what the device must do for its users"
+echo "      (the requirements-engineer agent will derive all other artifacts from these)"
+echo "   3. Run 'make dashboard' to scan the project and update the dashboard"
 echo "   4. Open 'dashboard/index.html' to view the project dashboard"
 echo ""
