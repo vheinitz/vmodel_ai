@@ -89,6 +89,11 @@ benchmark-list:  ## List available benchmark scenarios
 reports:  ## Render project artifacts to HTML for dashboard
 	@bash $(SCRIPTS)/generate-reports.sh
 
+render: reports  ## Alias: render artifacts to HTML
+
+render-pdf:  ## Render artifacts to HTML + PDF
+	@bash $(SCRIPTS)/generate-reports.sh --pdf
+
 all: dashboard agents checklists traceability reports  ## Run full analysis cycle
 	@echo ""
 	@echo "Full analysis cycle complete."

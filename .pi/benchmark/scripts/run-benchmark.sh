@@ -45,7 +45,6 @@ cd "$REPO_ROOT"
 SCENARIO_FILE=".pi/benchmark/scenarios/${SCENARIO}.json"
 [ -f "$SCENARIO_FILE" ] || die "scenario file not found: $SCENARIO_FILE"
 
-GEN_SCRIPT=".pi/benchmark/scripts/gen-userneeds.py"
 MEASURE_SCRIPT=".pi/benchmark/scripts/measure-artifacts.py"
 PROMPT_FILE="${PROMPT_FILE:-.pi/benchmark/prompts/v-model-pipeline.md}"
 [ -f "$PROMPT_FILE" ] || die "prompt file not found: $PROMPT_FILE"
@@ -72,13 +71,18 @@ RUN_ID="${RUN_ID:-$(date +%Y%m%d-%H%M%S)}"
 RUN_LABEL="run-${RUN_ID}"
 
 # Read scenario fields with python (avoids depending on jq).
-read -r COUNT SEED < <(python3 - "$SCENARIO_FILE" <<'PY'
+# Expected fields: generator (filename under .pi/benchmark/scripts/), input_path.
+read -r GENERATOR INPUT_PATH < <(python3 - "$SCENARIO_FILE" <<'PY'
 import json, sys
 d = json.load(open(sys.argv[1]))
-print(d["count"], d.get("seed", d["name"]))
+print(d["generator"], d["input_path"])
 PY
 )
-[ -n "$COUNT" ] || die "failed to parse scenario $SCENARIO_FILE"
+[ -n "$GENERATOR" ] || die "scenario $SCENARIO_FILE is missing 'generator' field"
+[ -n "$INPUT_PATH" ] || die "scenario $SCENARIO_FILE is missing 'input_path' field"
+
+GEN_SCRIPT=".pi/benchmark/scripts/$GENERATOR"
+[ -f "$GEN_SCRIPT" ] || die "generator not found: $GEN_SCRIPT"
 
 BRANCH="benchmark/${SCENARIO}-${RUN_LABEL}"
 
@@ -88,9 +92,10 @@ cat <<EOF
 Benchmark run
 =============
 Repo:            $REPO_ROOT
-Scenario:        $SCENARIO   (count=$COUNT, seed=$SEED)
+Scenario:        $SCENARIO   (generator=$GENERATOR)
 Run id:          $RUN_ID
 Branch:          $BRANCH
+Input file:      $INPUT_PATH
 Prompt:          $PROMPT_FILE
 Agent command:   $PI_CMD
 Timeout:         ${TIMEOUT_SECONDS}s
@@ -120,13 +125,13 @@ trap cleanup EXIT
 
 # -- Generate input ----------------------------------------------------------
 
-OUT_DIR="project/01_Requirements/00_UserNeeds"
-echo "[1/5] Generating $COUNT STK artifacts into $OUT_DIR ..."
-python3 "$GEN_SCRIPT" --count "$COUNT" --seed "$SEED" --output "$OUT_DIR" --clean \
-    || die "gen-userneeds failed"
+echo "[1/5] Generating input document at $INPUT_PATH ..."
+mkdir -p "$(dirname "$INPUT_PATH")"
+python3 "$GEN_SCRIPT" --output "$INPUT_PATH" \
+    || die "$GENERATOR failed"
 
-git add "$OUT_DIR"
-git commit --quiet -m "benchmark: generate $COUNT STK reqs for $SCENARIO ($RUN_LABEL)" \
+git add "$INPUT_PATH"
+git commit --quiet -m "benchmark: generate input for $SCENARIO ($RUN_LABEL)" \
     || die "could not commit generated input"
 
 # -- Baseline snapshot --------------------------------------------------------
