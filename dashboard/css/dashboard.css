@@ -158,20 +158,15 @@ body {
 .snackbar.info { background: var(--accent); }
 @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-/* Floating Prompt Panel */
-.prompt-float {
-    position: fixed; bottom: 0; right: 16px; width: 420px; max-width: 95vw;
-    background: var(--surface); border: 1px solid var(--border);
-    border-bottom: none; border-radius: 8px 8px 0 0;
-    z-index: 200; box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
-    transition: all 0.2s;
+/* Inline Prompt Bar (above tabs) */
+.prompt-bar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    margin: 0; max-width: 1800px; margin: 0 auto;
 }
-.prompt-float-header {
-    padding: 10px 16px; cursor: pointer; display: flex; justify-content: space-between;
+.prompt-bar-header {
+    padding: 10px 20px; display: flex; justify-content: space-between;
     align-items: center; color: #fff; font-size: 0.88em; font-weight: 600;
-    background: var(--surface2); border-radius: 8px 8px 0 0; user-select: none;
+    background: var(--surface2); user-select: none;
 }
-.prompt-float-header:hover { background: #243040; }
-.prompt-float-body { padding: 12px 16px; max-height: 350px; overflow-y: auto; }
-.prompt-float-body.collapsed { display: none; }
-@media (max-width: 600px) { .prompt-float { right: 4px; width: calc(100vw - 8px); } }
+.prompt-bar-body { padding: 12px 20px; max-height: 300px; overflow-y: auto; }
+.prompt-bar-body.collapsed { display: none; }

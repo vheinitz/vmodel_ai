@@ -135,6 +135,19 @@ TOTAL_VALID=$((VALID_IQ + VALID_OQ + VALID_PQ))
 TOTAL_INTEG=$((INTEG_SW + INTEG_SYS))
 
 PHASE_INIT_COMPL=$(calc_phase "$PM" 5)
+
+# If project metadata is set (name, number, safety class), initiation is at least 50%
+PROJECT_INITIALIZED="false"
+if [[ -f "${PROJECT_ROOT}/dashboard/data/project.json" ]]; then
+    PROJ_NAME=$(python3 -c "import json; d=json.load(open('${PROJECT_ROOT}/dashboard/data/project.json')); print(d.get('project',{}).get('name',''))" 2>/dev/null || true)
+    PROJ_SAFETY=$(python3 -c "import json; d=json.load(open('${PROJECT_ROOT}/dashboard/data/project.json')); print(d.get('project',{}).get('safety_class',''))" 2>/dev/null || true)
+    if [[ -n "${PROJ_NAME}" && "${PROJ_NAME}" != "TEMPLATE" && -n "${PROJ_SAFETY}" && "${PROJ_SAFETY}" != "?" ]]; then
+        PROJECT_INITIALIZED="true"
+    fi
+fi
+if [[ "${PROJECT_INITIALIZED}" == "true" && ${PHASE_INIT_COMPL} -lt 50 ]]; then
+    PHASE_INIT_COMPL=50
+fi
 PHASE_REQS_COMPL=$(calc_phase "$TOTAL_REQS" 5)
 PHASE_ARCH_COMPL=$(calc_phase "$TOTAL_ARCH" 3)
 PHASE_DESIGN_COMPL=$(calc_phase "$TOTAL_DESIGN" 3)
@@ -188,7 +201,7 @@ data['phases']['09_maintenance']['status'] = 'pending'
 
 # Artifact counts
 data['artifact_counts'] = {
-    'stakeholder_reqs': ${REQS_STAKEHOLDER},
+    'stakeholder_reqs': $((REQS_STAKEHOLDER + REQS_USERNEEDS)),
     'system_reqs': ${REQS_SYSTEM},
     'software_reqs': ${REQS_SW},
     'hardware_reqs': ${REQS_HW},

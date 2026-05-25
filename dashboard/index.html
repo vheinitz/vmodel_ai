@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeliosAI — Project Dashboard</title>
+<title>V-Model AI — Project Dashboard</title>
 <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
      ============================================================ -->
 <div class="header">
     <div>
-        <h1>HeliosAI Dashboard</h1>
+        <h1>V-Model AI Dashboard</h1>
         <div class="project-info" id="projectInfo">Loading...</div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -23,11 +23,26 @@
 </div>
 
 <!-- ============================================================
+     PROMPT PANEL (always visible, above tabs)
+     ============================================================ -->
+<div class="prompt-bar" id="promptBar">
+    <div class="prompt-bar-header">
+        <span>💬 Agent Prompt</span>
+        <button class="btn btn-sm" style="background:var(--surface2);color:var(--text);border:1px solid var(--border)" onclick="togglePromptBar()" id="promptToggleBtn">▲ Hide</button>
+    </div>
+    <div class="prompt-bar-body" id="promptBarBody">
+        <div id="panel-prompt">
+            <div class="panel-loading">Loading prompt interface...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
      MAIN TAB NAVIGATION
      ============================================================ -->
 <div class="tab-nav">
     <button class="tab-btn active" data-tab="overview">📋 Overview</button>
-    <button class="tab-btn" data-tab="agents">🤖 Agents</button>
+    <button class="tab-btn" data-tab="documents">📁 Documents</button>
     <button class="tab-btn" data-tab="history">📜 History</button>
     <button class="tab-btn" data-tab="reports">📊 Reports</button>
 </div>
@@ -36,7 +51,7 @@
      TAB CONTENT
      ============================================================ -->
 
-<!-- TAB: Overview -->
+<!-- TAB: Overview (merged: phases, gates, metrics, agents) -->
 <div class="tab-panel active" id="tab-overview">
     <div class="tab-columns">
         <div class="tab-col-wide">
@@ -59,6 +74,16 @@
                     <div class="panel-loading">Loading gates...</div>
                 </div>
             </div>
+
+            <!-- Agent Status -->
+            <div class="card">
+                <h2 class="panel-toggle" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('collapsed')">
+                    🤖 Agent Status <span class="arrow">▼</span>
+                </h2>
+                <div class="panel-body" id="panel-agents">
+                    <div class="panel-loading">Loading agents...</div>
+                </div>
+            </div>
         </div>
 
         <div class="tab-col-narrow">
@@ -73,12 +98,12 @@
     </div>
 </div>
 
-<!-- TAB: Agents -->
-<div class="tab-panel" id="tab-agents">
+<!-- TAB: Documents (artifact breakdown) -->
+<div class="tab-panel" id="tab-documents">
     <div class="card">
-        <h2>🤖 Agent Status</h2>
-        <div id="panel-agents">
-            <div class="panel-loading">Loading agents...</div>
+        <h2>📁 Artifact Inventory</h2>
+        <div id="panel-documents">
+            <div class="panel-loading">Loading documents...</div>
         </div>
     </div>
 </div>
@@ -104,20 +129,6 @@
 </div>
 
 <!-- ============================================================
-     PROMPT PANEL (floating, always accessible)
-     ============================================================ -->
-<div class="prompt-float" id="promptFloat">
-    <div class="prompt-float-header" onclick="togglePrompt()">
-        💬 Pi Agent Prompt <span id="promptToggle">▲</span>
-    </div>
-    <div class="prompt-float-body" id="promptFloatBody">
-        <div id="panel-prompt">
-            <div class="panel-loading">Loading prompt interface...</div>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
      SCRIPTS
      ============================================================ -->
 <script src="js/dashboard.js"></script>
@@ -125,28 +136,20 @@
 <script src="js/panels/gates.js"></script>
 <script src="js/panels/metrics.js"></script>
 <script src="js/panels/agents.js"></script>
+<script src="js/panels/documents.js"></script>
 <script src="js/panels/history.js"></script>
 <script src="js/panels/reports.js"></script>
 <script src="js/panels/prompt.js"></script>
-
-<!-- Embedded status data (fallback) -->
-
-
-
-
-
-
-
-
-<script id="embedded-status-data" type="application/json">{"project": "Unconfigured Project", "number": "TEMPLATE", "safety_class": "?", "last_update": "2026-05-25T01:55:11+02:00", "phases": {"00_project_initiation": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "01_requirements": {"status": "completed", "completion": 100, "checklist_total": 18, "checklist_done": 0}, "02_architecture": {"status": "completed", "completion": 100, "checklist_total": 15, "checklist_done": 0}, "03_design": {"status": "completed", "completion": 100, "checklist_total": 12, "checklist_done": 0}, "04_implementation": {"status": "completed", "completion": 100, "checklist_total": 12, "checklist_done": 0}, "05_integration": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "06_verification": {"status": "completed", "completion": 100, "checklist_total": 13, "checklist_done": 0}, "07_validation": {"status": "pending", "completion": 0, "checklist_total": 11, "checklist_done": 0}, "08_release": {"status": "pending", "completion": 0, "checklist_total": 9, "checklist_done": 0}, "09_maintenance": {"status": "pending", "completion": 0, "checklist_total": 8, "checklist_done": 0}}, "decision_gates": {"G1_project_approved": false, "G2_requirements_baselined": true, "G3_architecture_defined": false, "G4_design_completed": false, "G5_implementation_done": false, "G6_integration_done": false, "G7_verification_done": false, "G8_validation_done": false, "G9_project_completed": false}, "metrics": {"total_requirements": 0, "requirements_with_tests": 0, "total_risk_items": 0, "risk_items_controlled": 0, "total_test_cases": 0, "test_cases_passed": 0, "test_cases_failed": 0, "code_coverage_percent": 0.0, "open_defects": 0, "resolved_defects": 0}, "agents": {"project-manager": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "requirements-engineer": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "system-architect": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "software-architect": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "developer": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "tester": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "risk-manager": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "qa-manager": {"last_run": "2026-05-24T23:24:58+02:00", "status": "pending", "suggestions": []}, "innovation-manager": {"last_run": null, "status": "idle", "suggestions": []}, "medical-domain-expert": {"last_run": null, "status": "idle", "suggestions": []}}, "artifact_counts": {"stakeholder_reqs": 6, "system_reqs": 6, "software_reqs": 6, "hardware_reqs": 0, "system_arch": 4, "software_arch": 9, "hardware_arch": 0, "system_design": 0, "software_design": 5, "source_files": 31, "unit_test_files": 10, "unit_test_files_md": 6, "verification_files": 0, "integration_test_files": 2, "system_test_files": 3, "risk_docs": 0, "fmea_docs": 5, "project_mgmt": 0}, "decision_gates_detail": {"G1_project_approved": {"gate": "G1", "name": "project_approved", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G1 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G2_requirements_baselined": {"gate": "G2", "name": "requirements_baselined", "ready": true, "implemented": true, "blockers": [], "stats": {"stakeholder_needs_total": 6, "stakeholder_needs_approved": 6, "system_requirements_total": 6, "system_requirements_baselined": 6, "software_requirements_total": 6, "software_requirements_baselined": 6}}, "G3_architecture_defined": {"gate": "G3", "name": "architecture_defined", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G3 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G4_design_completed": {"gate": "G4", "name": "design_completed", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G4 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G5_implementation_done": {"gate": "G5", "name": "implementation_done", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G5 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G6_integration_done": {"gate": "G6", "name": "integration_done", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G6 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G7_verification_done": {"gate": "G7", "name": "verification_done", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G7 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G8_validation_done": {"gate": "G8", "name": "validation_done", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G8 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}, "G9_project_completed": {"gate": "G9", "name": "project_completed", "ready": false, "implemented": false, "blockers": [{"code": "not-implemented", "message": "Gate G9 readiness logic not yet implemented.", "artifact_id": null}], "stats": {}}}}</script>
 
 <script>
 // Tab switching logic
 function switchTab(tabName) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector(`.tab-btn[data-tab="${tabName}"]`)?.classList.add('active');
-    document.getElementById(`tab-${tabName}`)?.classList.add('active');
+    const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+    const panel = document.getElementById(`tab-${tabName}`);
+    if (btn) btn.classList.add('active');
+    if (panel) panel.classList.add('active');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -155,12 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Prompt float toggle
-function togglePrompt() {
-    const body = document.getElementById('promptFloatBody');
-    const toggle = document.getElementById('promptToggle');
+// Prompt bar toggle
+function togglePromptBar() {
+    const body = document.getElementById('promptBarBody');
+    const btn = document.getElementById('promptToggleBtn');
     body.classList.toggle('collapsed');
-    toggle.textContent = body.classList.contains('collapsed') ? '▼' : '▲';
+    btn.textContent = body.classList.contains('collapsed') ? '▼ Show' : '▲ Hide';
 }
 </script>
 
