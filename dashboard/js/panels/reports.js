@@ -13,20 +13,25 @@ async function renderPanelReports() {
     let artifactsData = null;
     let legacyData = null;
 
-    // Try loading artifact index first (individual rendered artifacts)
-    try {
-        const resp = await fetch('data/reports/artifacts/index.json?' + Date.now());
-        if (resp.ok) artifactsData = await resp.json();
-    } catch (e) { /* fall through */ }
-
-    // Also try legacy overview report index
-    try {
-        const resp = await fetch('data/reports/index.json?' + Date.now());
-        if (resp.ok) legacyData = await resp.json();
-    } catch (e) { /* fall through */ }
+    // Use embedded data if available (works offline without server)
+    if (typeof EMBEDDED_REPORTS_DATA !== 'undefined' && EMBEDDED_REPORTS_DATA) {
+        artifactsData = { artifacts: EMBEDDED_REPORTS_DATA.artifacts || [], generated: EMBEDDED_REPORTS_DATA.generated };
+        legacyData = { pages: EMBEDDED_REPORTS_DATA.legacy_pages || [] };
+    } else {
+        // Fallback: fetch from server
+        try {
+            const resp = await fetch('data/reports/artifacts/index.json?' + Date.now());
+            if (resp.ok) artifactsData = await resp.json();
+        } catch (e) { /* fall through */ }
+        try {
+            const resp = await fetch('data/reports/index.json?' + Date.now());
+            if (resp.ok) legacyData = await resp.json();
+        } catch (e) { /* fall through */ }
+    }
 
     const allArtifacts = artifactsData?.artifacts || [];
-    // Build categories from flat artifact list if not provided
+    // Build categories from artifact data:
+    // Each artifact has .category (e.g. "01_Requirements") and .html (filename)
     let categories = artifactsData?.categories || {};
     if (Object.keys(categories).length === 0 && allArtifacts.length > 0) {
         categories = buildCategories(allArtifacts);
@@ -104,10 +109,10 @@ async function renderPanelReports() {
                 const statusCls = item.status === 'baselined' || item.status === 'approved' ? 'color:var(--success)' : 'color:var(--text-dim)';
                 const statusDot = item.status ? `<span style="${statusCls};font-size:0.85em">● </span>` : '';
                 html += `<div class="report-item" style="padding:3px 12px">
-                    <span style="font-size:0.8em">${statusDot}<span title="${item.source || ''}">${item.title || item.id || item.file}</span></span>
+                    <span style="font-size:0.8em">${statusDot}<span title="${item.path || ''}">${item.title || item.id || (item.html||'').replace('.html','')}</span></span>
                     <span style="display:flex;gap:4px;align-items:center">
-                        <button class="btn btn-primary btn-sm" onclick="viewArtifact('${item.file}', '${(item.title||item.file||'').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">View</button>
-                        <a href="data/reports/artifacts/${item.file}" target="_blank" class="btn btn-sm" style="background:var(--surface2);color:var(--text);text-decoration:none;border:1px solid var(--border);padding:4px 8px;font-size:0.75em">↗</a>
+                        <button class="btn btn-primary btn-sm" onclick="viewArtifact('${item.html}', '${(item.title||item.html||'').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">View</button>
+                        <a href="data/reports/artifacts/${item.html}" target="_blank" class="btn btn-sm" style="background:var(--surface2);color:var(--text);text-decoration:none;border:1px solid var(--border);padding:4px 8px;font-size:0.75em">↗</a>
                     </span>
                 </div>`;
             }
@@ -147,53 +152,25 @@ async function renderPanelReports() {
     container.innerHTML = html;
 }
 
-// Build categories from flat artifact list by parsing filenames
+// Build categories from flat artifact list using .category and .html fields
 function buildCategories(artifacts) {
     const cats = {};
-    const catNames = {
-        '00_UserNeeds': 'User Needs',
-        '01_StakeholderReqs': 'Stakeholder Requirements',
-        '02_SystemReqs': 'System Requirements',
-        '03_SoftwareReqs': 'Software Requirements',
-        '04_HardwareReqs': 'Hardware Requirements',
-        '01_SystemArchitecture': 'System Architecture',
-        '02_SoftwareArchitecture': 'Software Architecture',
-        '03_HardwareArchitecture': 'Hardware Architecture',
-        'decisions': 'Architecture Decisions',
-        '01_SystemDesign': 'System Design',
-        '02_SoftwareDesign': 'Software Design',
-        '01_UnitTests': 'Unit Tests',
-        '02_IntegrationTests': 'Integration Tests',
-        '03_SystemTests': 'System Tests',
-        '04_ArchitectureTests': 'Architecture Tests',
-        '01_RiskAnalysis': 'Risk Analysis',
-        '02_FMEA': 'FMEA',
-        '03_SafetyClassification': 'Safety Classification',
-        'templates': 'Documentation Templates',
-        '01_IEC62304': 'Regulatory',
-        'README': 'Overview',
-        'overview': 'Overview',
+    const catMap = {
+        '01_Requirements': 'Requirements',
+        '02_Architecture': 'Architecture',
+        '03_Design': 'Design',
+        '04_Implementation': 'Implementation',
+        '05_Integration': 'Integration',
+        '06_Verification': 'Verification',
+        '07_Validation': 'Validation',
+        '08_RiskManagement': 'Risk Management',
+        '09_Regulatory': 'Regulatory',
+        '10_Documentation': 'Documentation',
     };
 
     for (const art of artifacts) {
-        const file = art.file || '';
-        // Parse category from filename like "01_Requirements_00_UserNeeds_STK-001.html"
-        const parts = file.replace(/\.html$/,'').split('_');
-        let cat = 'Other';
-        // Try to match known patterns
-        for (let i = 0; i < parts.length; i++) {
-            const candidate = parts.slice(i).join('_');
-            if (catNames[candidate]) {
-                cat = catNames[candidate];
-                break;
-            }
-        }
-        // If still "Other", try partial matches
-        if (cat === 'Other') {
-            for (const [key, name] of Object.entries(catNames)) {
-                if (file.includes(key)) { cat = name; break; }
-            }
-        }
+        // Use the category field from the artifact data, or parse from html filename
+        let cat = catMap[art.category] || 'Other';
         if (!cats[cat]) cats[cat] = [];
         cats[cat].push(art);
     }
